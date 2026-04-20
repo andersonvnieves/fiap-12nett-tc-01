@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "br.com.fiap.cloudgames.WebAPI", "br.com.fiap.cloudgames.WebAPI\br.com.fiap.cloudgames.WebAPI.csproj", "{B10B0974-F5D5-4639-A8BB-DB78D2C250A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "br.com.fiap.cloudgames.Domain", "br.com.fiap.cloudgames.Domain\br.com.fiap.cloudgames.Domain.csproj", "{75D67BB6-B19C-45F6-9CDF-EC56EFBE19F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "br.com.fiap.cloudgames.Application", "br.com.fiap.cloudgames.Application\br.com.fiap.cloudgames.Application.csproj", "{800859F2-97DC-4622-8D5C-79247755BE7A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "br.com.fiap.cloudgames.Infrastructure", "br.com.fiap.cloudgames.Infrastructure\br.com.fiap.cloudgames.Infrastructure.csproj", "{0FE9ABED-B6AF-4745-95FE-146DA16D0074}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B10B0974-F5D5-4639-A8BB-DB78D2C250A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B10B0974-F5D5-4639-A8BB-DB78D2C250A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B10B0974-F5D5-4639-A8BB-DB78D2C250A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B10B0974-F5D5-4639-A8BB-DB78D2C250A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75D67BB6-B19C-45F6-9CDF-EC56EFBE19F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75D67BB6-B19C-45F6-9CDF-EC56EFBE19F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75D67BB6-B19C-45F6-9CDF-EC56EFBE19F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75D67BB6-B19C-45F6-9CDF-EC56EFBE19F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{800859F2-97DC-4622-8D5C-79247755BE7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{800859F2-97DC-4622-8D5C-79247755BE7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{800859F2-97DC-4622-8D5C-79247755BE7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{800859F2-97DC-4622-8D5C-79247755BE7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0FE9ABED-B6AF-4745-95FE-146DA16D0074}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FE9ABED-B6AF-4745-95FE-146DA16D0074}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FE9ABED-B6AF-4745-95FE-146DA16D0074}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FE9ABED-B6AF-4745-95FE-146DA16D0074}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
