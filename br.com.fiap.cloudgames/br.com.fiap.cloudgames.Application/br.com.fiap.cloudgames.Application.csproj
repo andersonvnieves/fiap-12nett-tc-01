@@ -7,8 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="DTOs\" />
-      <Folder Include="UseCases\" />
+      <ProjectReference Include="..\br.com.fiap.cloudgames.Domain\br.com.fiap.cloudgames.Domain.csproj" />
+      <ProjectReference Include="..\br.com.fiap.cloudgames.Infrastructure\br.com.fiap.cloudgames.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

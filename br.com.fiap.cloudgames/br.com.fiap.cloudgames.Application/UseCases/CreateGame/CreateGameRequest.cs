@@ -1,0 +1,15 @@
+namespace br.com.fiap.cloudgames.Application.UseCases.CreateGame;
+
+public class CreateGameRequest
+{
+    public String Title { get; set; }
+    public String Description { get; set; }
+    public String Story { get; set; }
+    public String Franchise { get; set; }
+    public DateOnly ReleaseDate { get; set; }
+    public String AgeRating { get; set; }
+    public List<String> GameModes { get; set; }
+    public String Publisher { get; set; }
+    public List<String> Developers { get; set; }
+    public List<String> Platforms { get; set; }
+}

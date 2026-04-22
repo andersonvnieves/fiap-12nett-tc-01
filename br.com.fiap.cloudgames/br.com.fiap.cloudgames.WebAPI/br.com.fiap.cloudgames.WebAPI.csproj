@@ -9,6 +9,8 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.0"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.2" />
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="10.0.2" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.7" />
     </ItemGroup>
 
@@ -16,6 +18,12 @@
       <Content Include="..\.dockerignore">
         <Link>.dockerignore</Link>
       </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\br.com.fiap.cloudgames.Application\br.com.fiap.cloudgames.Application.csproj" />
+      <ProjectReference Include="..\br.com.fiap.cloudgames.Domain\br.com.fiap.cloudgames.Domain.csproj" />
+      <ProjectReference Include="..\br.com.fiap.cloudgames.Infrastructure\br.com.fiap.cloudgames.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
