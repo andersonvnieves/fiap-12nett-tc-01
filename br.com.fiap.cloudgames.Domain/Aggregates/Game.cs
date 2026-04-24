@@ -8,7 +8,6 @@ public class Game
     public Game() { } //ORM
     
     #region FactoryMethod
-
     public static Game CreateGame(
         String title, 
         String description, 

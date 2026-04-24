@@ -1,17 +1,23 @@
 using br.com.fiap.cloudgames.Domain.Aggregates;
+using br.com.fiap.cloudgames.Infrastructure.Persistence.Configurations;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace br.com.fiap.cloudgames.Infrastructure.Persistence.Context;
 
-public class AppDbContext : DbContext
+public class AppDbContext : IdentityDbContext<IdentityUser>
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     { }
   
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfiguration(new GameConfiguration());
+        modelBuilder.ApplyConfiguration(new UserConfiguration());
     }
     
     public DbSet<Game> Games { get; set; }
+    public DbSet<User> Users { get; set; }
 }
