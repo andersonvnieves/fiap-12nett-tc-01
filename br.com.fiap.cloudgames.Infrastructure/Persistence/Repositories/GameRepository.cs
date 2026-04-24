@@ -21,10 +21,6 @@ public class GameRepository : IGameRepository
     
     public async Task AddAsync(Game game)
     {
-        var stopwatch = Stopwatch.StartNew();
         await _games.AddAsync(game);
-        await _context.SaveChangesAsync();
-        stopwatch.Stop();
-        _logger.LogInformation("Duration in ms: " + stopwatch.ElapsedMilliseconds);
     }
 }

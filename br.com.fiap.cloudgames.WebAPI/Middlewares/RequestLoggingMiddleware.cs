@@ -23,40 +23,25 @@ public class RequestLoggingMiddleware
         var method = context.Request.Method;
         var path = context.Request.Path;
         String? userId = context.User?.Identity?.Name;
-
-        try
-        {
-            _logger.LogInformation(
-                "HTTP {method} {path} Initiating request.  | RequestID={requestId} | UserId={userId}",
-                method,
-                path,
-                requestId,
-                userId);
-            
-            await _next(context);
-            stopwatch.Stop();
-            
-            _logger.LogInformation(
-                "HTTP {method} {path} responded {statusCode} in {duration} milliseconds | RequestID={requestId} | UserId={userId}",
-                method,
-                path,
-                context.Response.StatusCode,
-                stopwatch.ElapsedMilliseconds,
-                requestId,
-                userId);
-        }
-        catch (Exception e)
-        {
-            stopwatch.Stop();
-            _logger.LogError(
-                e,
-                "HTTP {method} {path} failed in {duration} milliseconds | RequestID={requestId} | UserId={userId}",
-                method,
-                path,
-                stopwatch.ElapsedMilliseconds,
-                requestId,
-                userId);
-        }
+        
+        _logger.LogInformation(
+            "HTTP {method} {path} Initiating request.  | RequestID={requestId} | UserId={userId}",
+            method,
+            path,
+            requestId,
+            userId);
+        
+        await _next(context);
+        stopwatch.Stop();
+        
+        _logger.LogInformation(
+            "HTTP {method} {path} responded {statusCode} in {duration} milliseconds | RequestID={requestId} | UserId={userId}",
+            method,
+            path,
+            context.Response.StatusCode,
+            stopwatch.ElapsedMilliseconds,
+            requestId,
+            userId);
     }
 
     private String GetOrCreateCorrelationId(HttpContext context)

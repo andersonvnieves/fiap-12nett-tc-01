@@ -12,13 +12,16 @@ public class UserRepository : IUserRepository
     private readonly ILogger<UserRepository> _logger;
     private readonly AppDbContext _context;
     private readonly DbSet<User>  _users;
+
+    public UserRepository(ILogger<UserRepository> logger, AppDbContext context)
+    {
+        _logger = logger;
+        _context = context;
+        _users = _context.Set<User>();
+    }
     
     public async Task AddAsync(User user)
     {
-        var stopwatch = Stopwatch.StartNew();
         await _users.AddAsync(user);
-        await _context.SaveChangesAsync();
-        stopwatch.Stop();
-        _logger.LogInformation("Duration in ms: " + stopwatch.ElapsedMilliseconds);
     }
 }

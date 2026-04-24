@@ -1,6 +1,8 @@
+using br.com.fiap.cloudgames.Domain.Repositories;
 using br.com.fiap.cloudgames.Application.UseCases.CreateGame;
 using br.com.fiap.cloudgames.Application.UseCases.RegisterUser;
-using br.com.fiap.cloudgames.Domain.Repositories;
+using br.com.fiap.cloudgames.Domain.UnitsOfWork;
+using br.com.fiap.cloudgames.Infrastructure.Persistence;
 using br.com.fiap.cloudgames.Infrastructure.Persistence.Context;
 using br.com.fiap.cloudgames.Infrastructure.Persistence.Repositories;
 using br.com.fiap.cloudgames.WebAPI.Middlewares;
@@ -36,6 +38,9 @@ builder.Services.AddAuthorization();
 //Repositories
 builder.Services.AddScoped<IGameRepository, GameRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+//UnitOfWork
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 //UseCases
 builder.Services.AddScoped<CreateGameUseCase>();

@@ -1,7 +1,7 @@
+using br.com.fiap.cloudgames.Domain.Repositories;
 using br.com.fiap.cloudgames.Domain.Aggregates;
 using br.com.fiap.cloudgames.Domain.Entities;
 using br.com.fiap.cloudgames.Domain.Enums;
-using br.com.fiap.cloudgames.Domain.Repositories;
 
 namespace br.com.fiap.cloudgames.Application.UseCases.CreateGame;
 
