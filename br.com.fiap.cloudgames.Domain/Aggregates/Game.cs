@@ -71,12 +71,8 @@ public class Game
         
         if (String.IsNullOrWhiteSpace(story))
             throw new ArgumentNullException(nameof(Story));
-       
-        var today = DateOnly.FromDateTime(DateTime.UtcNow);
-
-        Console.WriteLine($"ReleaseDate: {releaseDate}");
-        Console.WriteLine($"Today: {today}");
-        if (releaseDate < DateOnly.FromDateTime(DateTime.UtcNow))
+        
+        if (releaseDate > DateOnly.FromDateTime(DateTime.Now))
             throw new ArgumentOutOfRangeException(nameof(ReleaseDate));
         
         if (gameModes == null || !gameModes.Any())

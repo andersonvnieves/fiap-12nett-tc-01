@@ -2,17 +2,18 @@ using br.com.fiap.cloudgames.Domain.Repositories;
 using br.com.fiap.cloudgames.Domain.Aggregates;
 using br.com.fiap.cloudgames.Domain.Entities;
 using br.com.fiap.cloudgames.Domain.Enums;
+using br.com.fiap.cloudgames.Domain.UnitsOfWork;
 
 namespace br.com.fiap.cloudgames.Application.UseCases.CreateGame;
 
 public class CreateGameUseCase
 {
-    //TODO: Add logger
-
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IGameRepository  _gameRepository;
     
-    public CreateGameUseCase(IGameRepository gameRepository)
+    public CreateGameUseCase(IUnitOfWork unitOfWork, IGameRepository gameRepository)
     {
+        _unitOfWork = unitOfWork;
         _gameRepository = gameRepository; 
     }
 
@@ -58,7 +59,7 @@ public class CreateGameUseCase
             platforms);
         
         await _gameRepository.AddAsync(game);
-        
+        await _unitOfWork.CommitAsync();
         var response = new CreateGameResponse()
         {
             Id = game.Id.ToString(),

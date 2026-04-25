@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Http;
+using br.com.fiap.cloudgames.Application.UseCases.LogIn;
 using Microsoft.AspNetCore.Mvc;
 
 namespace br.com.fiap.cloudgames.WebAPI.Controllers
@@ -7,6 +7,18 @@ namespace br.com.fiap.cloudgames.WebAPI.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        
+        private readonly LogInUseCase _logInUseCase;
+
+        public AuthController(LogInUseCase logInUseCase)
+        {
+            _logInUseCase = logInUseCase;
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LogInRequest request)
+        {
+            var result = await  _logInUseCase.ExecuteAsync(request);
+            return Ok(result);
+        }
     }
 }

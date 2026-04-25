@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\br.com.fiap.cloudgames.Application\br.com.fiap.cloudgames.Application.csproj" />
       <ProjectReference Include="..\br.com.fiap.cloudgames.Domain\br.com.fiap.cloudgames.Domain.csproj" />
     </ItemGroup>
 

@@ -1,4 +1,5 @@
 using br.com.fiap.cloudgames.Application.UseCases.CreateGame;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace br.com.fiap.cloudgames.WebAPI.Controllers
@@ -13,6 +14,7 @@ namespace br.com.fiap.cloudgames.WebAPI.Controllers
             _createGameUseCase = createGameUseCase;
         }
         
+        [Authorize(Roles =  "Admin")]
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateGameRequest request)
         {
@@ -20,6 +22,7 @@ namespace br.com.fiap.cloudgames.WebAPI.Controllers
             return CreatedAtAction(nameof(Get), new { id = result.Id }, result);
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Get(String Id)
         {

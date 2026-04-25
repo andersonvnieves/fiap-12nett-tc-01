@@ -1,15 +1,25 @@
+using System.Text;
+using br.com.fiap.cloudgames.Application.Services;
 using br.com.fiap.cloudgames.Domain.Repositories;
 using br.com.fiap.cloudgames.Application.UseCases.CreateGame;
+using br.com.fiap.cloudgames.Application.UseCases.LogIn;
 using br.com.fiap.cloudgames.Application.UseCases.RegisterUser;
 using br.com.fiap.cloudgames.Domain.UnitsOfWork;
+using br.com.fiap.cloudgames.Infrastructure.Config;
 using br.com.fiap.cloudgames.Infrastructure.Persistence;
 using br.com.fiap.cloudgames.Infrastructure.Persistence.Context;
 using br.com.fiap.cloudgames.Infrastructure.Persistence.Repositories;
+using br.com.fiap.cloudgames.Infrastructure.Service;
 using br.com.fiap.cloudgames.WebAPI.Middlewares;
+using br.com.fiap.cloudgames.WebAPI.Setup;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//Settings
+builder.Services.Configure<JwtTokenSettings>(builder.Configuration.GetSection("Jwt"));
 
 //Add Db Context
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -29,8 +39,21 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(option =>
     .AddApiEndpoints();
 
 //Authentication
-builder.Services.AddAuthentication()
-    .AddJwtBearer();
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer("Bearer", options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters()
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        };
+    });
 
 //Authorization
 builder.Services.AddAuthorization();
@@ -44,7 +67,11 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 //UseCases
 builder.Services.AddScoped<CreateGameUseCase>();
+builder.Services.AddScoped<LogInUseCase>();
 builder.Services.AddScoped<RegisterUserUseCase>();
+
+//Services
+builder.Services.AddScoped<ITokenService, JwtTokenService>();
 
 builder.Services.AddControllers();
 
@@ -64,6 +91,15 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 var app = builder.Build();
+
+//Seed Identity
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var configuration = services.GetRequiredService<IConfiguration>();
+    await IdentitySeeder.SeedRoles(services);
+    await IdentitySeeder.SeedBootstrapUser(services, configuration);
+}
 
 app.UseRequestLoggingMiddleware();
 app.UseErrorHandlingMiddleware();
@@ -87,3 +123,22 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+
+//TODO: Abstrair todas as referencias de Identity da application Layer
+//TODO: Fazer o mesmo para saber qual usuario esta logado no momento e suas roles pra poder fazer o registro funcionar corretamente com a regra de admin
+//TODO: Implementar os Gets
+//TODO: Ajustar logs
+//TODO: Ajustar tratamentos de execoes, tentar domain exceptions e melhorar ou centralizar mensagens de erro
+
+//TODO: Criar projeto de UnitTest do Domain
+//TODO: Criar Testes de Integracao
+//TODO: Tentar implementar BDD
+
+
+//TODO: Extra, CQRS com Dapper
+//TODO: Extra, GraphQL
+//TODO: MongoDB
+
+
+//TODO: Extra do Extra, tentar fazer tesde de performace com o K6

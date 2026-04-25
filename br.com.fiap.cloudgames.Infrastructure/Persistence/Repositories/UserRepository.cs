@@ -24,4 +24,9 @@ public class UserRepository : IUserRepository
     {
         await _users.AddAsync(user);
     }
+
+    public User GetByIdentityId(string identityId)
+    {
+        return _users.FirstOrDefault(u => u.IdentityId == identityId);
+    }
 }
