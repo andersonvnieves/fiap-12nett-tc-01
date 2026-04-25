@@ -14,7 +14,7 @@ namespace br.com.fiap.cloudgames.WebAPI.Controllers
             _createGameUseCase = createGameUseCase;
         }
         
-        [Authorize(Roles =  "Admin")]
+        [Authorize(Roles =  "admin")]
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateGameRequest request)
         {

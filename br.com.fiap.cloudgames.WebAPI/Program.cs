@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Text;
 using br.com.fiap.cloudgames.Application.Services;
 using br.com.fiap.cloudgames.Domain.Repositories;
@@ -39,7 +40,11 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(option =>
     .AddApiEndpoints();
 
 //Authentication
-builder.Services.AddAuthentication("Bearer")
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = "Bearer";
+        options.DefaultChallengeScheme = "Bearer";
+    })
     .AddJwtBearer("Bearer", options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters()
@@ -51,7 +56,8 @@ builder.Services.AddAuthentication("Bearer")
             
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+            RoleClaimType = ClaimTypes.Role
         };
     });
 
