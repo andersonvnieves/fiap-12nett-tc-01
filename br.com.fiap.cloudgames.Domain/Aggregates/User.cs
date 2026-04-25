@@ -1,4 +1,3 @@
-using System.Security.AccessControl;
 using br.com.fiap.cloudgames.Domain.Enums;
 using br.com.fiap.cloudgames.Domain.ValueObjects;
 
@@ -17,9 +16,10 @@ public class User
             Id = Guid.NewGuid(),
             Name = name, 
             Email = email,
-            UserAccountStatus = UserAccountStatus.PendingVerification,
+            UserAccountStatus = UserAccountStatus.ACTIVE,
             IdentityId = identityId,
-            CreationDate = DateTime.Now
+            CreationDate = DateTime.Now,
+            Role = UserRoles.user
         };
     }
     #endregion
@@ -31,6 +31,7 @@ public class User
     public UserAccountStatus UserAccountStatus { get; private set; }
     public String IdentityId { get; set; }
     public DateTime CreationDate { get; set; }
+    public UserRoles Role { get; set; }
     #endregion
 
     private static void Validate(Name name, EmailAddress email, String identityId)

@@ -26,8 +26,8 @@ public class GameConfiguration : IEntityTypeConfiguration<Game>
             .IsRequired()
             .HasConversion(
                 v => JsonSerializer.Serialize(v, jsonOptions),
-                v => JsonSerializer.Deserialize<List<GameMode>>(v, jsonOptions) ?? new List<GameMode>())
-            .Metadata.SetValueComparer(new ValueComparer<List<GameMode>>(
+                v => JsonSerializer.Deserialize<List<GameModes>>(v, jsonOptions) ?? new List<GameModes>())
+            .Metadata.SetValueComparer(new ValueComparer<List<GameModes>>(
                 (a, b) => (a ?? new()).SequenceEqual(b ?? new()),
                 v => (v ?? new()).Aggregate(0, (acc, item) => HashCode.Combine(acc, item.GetHashCode())),
                 v => (v ?? new()).ToList()
@@ -45,8 +45,8 @@ public class GameConfiguration : IEntityTypeConfiguration<Game>
             .IsRequired()
             .HasConversion(
                 v => JsonSerializer.Serialize(v, jsonOptions),
-                v => JsonSerializer.Deserialize<List<Platform>>(v, jsonOptions) ?? new List<Platform>())
-            .Metadata.SetValueComparer(new ValueComparer<List<Platform>>(
+                v => JsonSerializer.Deserialize<List<Platforms>>(v, jsonOptions) ?? new List<Platforms>())
+            .Metadata.SetValueComparer(new ValueComparer<List<Platforms>>(
                 (a, b) => (a ?? new()).SequenceEqual(b ?? new()),
                 v => (v ?? new()).Aggregate(0, (acc, item) => HashCode.Combine(acc, item.GetHashCode())),
                 v => (v ?? new()).ToList()

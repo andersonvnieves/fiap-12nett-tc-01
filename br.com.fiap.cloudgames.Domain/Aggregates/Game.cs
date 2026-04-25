@@ -15,10 +15,10 @@ public class Game
         String franchise, 
         DateOnly releaseDate, 
         AgeRating ageRating, 
-        List<GameMode> gameModes,
+        List<GameModes> gameModes,
         Publisher publisher,
         List<Developer> developers,
-        List<Platform> platforms)
+        List<Platforms> platforms)
     {
         var game = new Game()
         {
@@ -47,10 +47,10 @@ public class Game
     public String Franchise { get; private set; }
     public DateOnly ReleaseDate { get; private set; }
     public AgeRating AgeRating { get; private set; }
-    public List<GameMode> GameModes { get; private set; }
+    public List<GameModes> GameModes { get; private set; }
     public Publisher Publisher { get; private set; }
     public List<Developer> Developers { get; private set; }
-    public List<Platform> Platforms { get; private set; }
+    public List<Platforms> Platforms { get; private set; }
     #endregion
 
     private static void Validate(
@@ -59,9 +59,9 @@ public class Game
         string story,
         DateOnly releaseDate,
         AgeRating ageRating,
-        List<GameMode> gameModes,
+        List<GameModes> gameModes,
         List<Developer> developers,
-        List<Platform> platforms)
+        List<Platforms> platforms)
     {
         if (String.IsNullOrWhiteSpace(title))
             throw new ArgumentNullException(nameof(Title));

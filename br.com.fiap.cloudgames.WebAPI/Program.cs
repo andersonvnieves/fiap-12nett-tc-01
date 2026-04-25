@@ -5,7 +5,8 @@ using br.com.fiap.cloudgames.Domain.Repositories;
 using br.com.fiap.cloudgames.Application.UseCases.CreateGame;
 using br.com.fiap.cloudgames.Application.UseCases.LogIn;
 using br.com.fiap.cloudgames.Application.UseCases.RegisterUser;
-using br.com.fiap.cloudgames.Domain.UnitsOfWork;
+using br.com.fiap.cloudgames.Application.UnitsOfWork;
+using br.com.fiap.cloudgames.Application.UseCases.ChangeUserRole;
 using br.com.fiap.cloudgames.Infrastructure.Config;
 using br.com.fiap.cloudgames.Infrastructure.Persistence;
 using br.com.fiap.cloudgames.Infrastructure.Persistence.Context;
@@ -75,8 +76,10 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<CreateGameUseCase>();
 builder.Services.AddScoped<LogInUseCase>();
 builder.Services.AddScoped<RegisterUserUseCase>();
+builder.Services.AddScoped<ChangeUserRoleUseCase>();
 
 //Services
+builder.Services.AddScoped<IUserAuthService, IdentityUserAuthService>();
 builder.Services.AddScoped<ITokenService, JwtTokenService>();
 
 builder.Services.AddControllers();
@@ -103,7 +106,7 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var configuration = services.GetRequiredService<IConfiguration>();
-    await IdentitySeeder.SeedRoles(services);
+    await IdentitySeeder.SeedRoles(services, configuration);
     await IdentitySeeder.SeedBootstrapUser(services, configuration);
 }
 
@@ -131,16 +134,14 @@ app.MapControllers();
 app.Run();
 
 
-//TODO: Abstrair todas as referencias de Identity da application Layer
-//TODO: Fazer o mesmo para saber qual usuario esta logado no momento e suas roles pra poder fazer o registro funcionar corretamente com a regra de admin
-//TODO: Implementar os Gets
+
+//TODO: Implementar os Gets  com CQRS
 //TODO: Ajustar logs
 //TODO: Ajustar tratamentos de execoes, tentar domain exceptions e melhorar ou centralizar mensagens de erro
 
 //TODO: Criar projeto de UnitTest do Domain
 //TODO: Criar Testes de Integracao
 //TODO: Tentar implementar BDD
-
 
 //TODO: Extra, CQRS com Dapper
 //TODO: Extra, GraphQL

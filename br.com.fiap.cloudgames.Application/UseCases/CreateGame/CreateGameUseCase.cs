@@ -2,7 +2,7 @@ using br.com.fiap.cloudgames.Domain.Repositories;
 using br.com.fiap.cloudgames.Domain.Aggregates;
 using br.com.fiap.cloudgames.Domain.Entities;
 using br.com.fiap.cloudgames.Domain.Enums;
-using br.com.fiap.cloudgames.Domain.UnitsOfWork;
+using br.com.fiap.cloudgames.Application.UnitsOfWork;
 
 namespace br.com.fiap.cloudgames.Application.UseCases.CreateGame;
 
@@ -22,10 +22,10 @@ public class CreateGameUseCase
         if (!Enum.TryParse<AgeRating>(request.AgeRating, true, out var ageRating))
             throw new ArgumentException($"Invalid age rating '{request.AgeRating}'");
         
-        var gameModes = new List<GameMode>();
+        var gameModes = new List<GameModes>();
         foreach (var requestGameMode in request.GameModes)
         {
-            if (!Enum.TryParse<GameMode>(requestGameMode, true, out var gameMode))
+            if (!Enum.TryParse<GameModes>(requestGameMode, true, out var gameMode))
                 throw new ArgumentException($"Invalid game mode '{requestGameMode}'");
             gameModes.Add(gameMode);
         }
@@ -38,10 +38,10 @@ public class CreateGameUseCase
             developers.Add(new Developer(requestDeveloper));
         }
         
-        var platforms = new List<Platform>();
+        var platforms = new List<Platforms>();
         foreach (var requestPlatform in request.Platforms)
         {
-            if(!Enum.TryParse<Platform>(requestPlatform, true, out var platform))
+            if(!Enum.TryParse<Platforms>(requestPlatform, true, out var platform))
                 throw new ArgumentException($"Invalid platform '{requestPlatform}'");
             platforms.Add(platform);
         }

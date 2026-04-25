@@ -13,7 +13,7 @@ namespace br.com.fiap.cloudgames.Infrastructure.Service;
 public class JwtTokenService : ITokenService
 {
     private readonly UserManager<IdentityUser> _userManager;
-    private readonly IOptions<JwtTokenSettings>  _settings;
+    private readonly IOptions<JwtTokenSettings> _settings;
 
     public JwtTokenService(UserManager<IdentityUser> userManager, IOptions<JwtTokenSettings> settings)
     {
@@ -21,8 +21,9 @@ public class JwtTokenService : ITokenService
         _settings = settings;
     }
     
-    public async Task<string> GenerateTokenAsync(IdentityUser identityUser, User user)
+    public async Task<string> GenerateTokenAsync(User user)
     {
+        var identityUser = await _userManager.FindByIdAsync(user.IdentityId);
         var claims = new List<Claim>()
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),

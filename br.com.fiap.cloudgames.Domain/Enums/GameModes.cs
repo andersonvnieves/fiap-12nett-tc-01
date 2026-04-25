@@ -1,6 +1,6 @@
 namespace br.com.fiap.cloudgames.Domain.Enums;
 
-public enum GameMode
+public enum GameModes
 {
     SinglePlayer,
     MultiPlayer,

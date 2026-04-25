@@ -10,9 +10,4 @@
       <ProjectReference Include="..\br.com.fiap.cloudgames.Domain\br.com.fiap.cloudgames.Domain.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="10.0.2" />
-      <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="10.0.2" />
-    </ItemGroup>
-
 </Project>

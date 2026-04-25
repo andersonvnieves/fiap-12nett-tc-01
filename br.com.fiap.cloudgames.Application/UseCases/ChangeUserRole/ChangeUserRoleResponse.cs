@@ -1,6 +1,6 @@
-namespace br.com.fiap.cloudgames.Application.UseCases.RegisterUser;
+namespace br.com.fiap.cloudgames.Application.UseCases.ChangeUserRole;
 
-public class RegisterUserResponse
+public class ChangeUserRoleResponse
 {
     public String Id { get; set; }
     public String FirstName { get; set; }

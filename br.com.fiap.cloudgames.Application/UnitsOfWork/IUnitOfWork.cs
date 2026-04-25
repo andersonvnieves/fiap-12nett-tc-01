@@ -1,4 +1,4 @@
-namespace br.com.fiap.cloudgames.Domain.UnitsOfWork;
+namespace br.com.fiap.cloudgames.Application.UnitsOfWork;
 
 public interface IUnitOfWork
 {

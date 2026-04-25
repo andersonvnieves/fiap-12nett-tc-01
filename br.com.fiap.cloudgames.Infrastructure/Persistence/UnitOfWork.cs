@@ -1,5 +1,4 @@
-using br.com.fiap.cloudgames.Domain.Repositories;
-using br.com.fiap.cloudgames.Domain.UnitsOfWork;
+using br.com.fiap.cloudgames.Application.UnitsOfWork;
 using br.com.fiap.cloudgames.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore.Storage;
 

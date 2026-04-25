@@ -35,6 +35,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasMaxLength(100);
         builder.Property(u => u.CreationDate)
             .IsRequired();
+        builder.Property(u => u.Role)
+            .HasConversion<string>()
+            .IsRequired();
         
         builder.HasIndex(u => u.IdentityId).IsUnique();
     }

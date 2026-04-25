@@ -1,6 +1,6 @@
 namespace br.com.fiap.cloudgames.Domain.Enums;
 
-public enum Platform
+public enum Platforms
 {
     Windows,
     Linux,

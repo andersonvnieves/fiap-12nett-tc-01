@@ -9,12 +9,13 @@ namespace br.com.fiap.cloudgames.WebAPI.Controllers
     public class GameController : ControllerBase
     {
         public readonly  CreateGameUseCase _createGameUseCase;
+        private const string ADMIN_ROLE = "admin";
         public GameController(CreateGameUseCase createGameUseCase)
         {
             _createGameUseCase = createGameUseCase;
         }
         
-        [Authorize(Roles =  "admin")]
+        [Authorize(Roles = ADMIN_ROLE)]
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateGameRequest request)
         {

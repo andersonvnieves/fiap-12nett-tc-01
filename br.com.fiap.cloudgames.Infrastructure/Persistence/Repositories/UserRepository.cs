@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Security.Cryptography.X509Certificates;
 using br.com.fiap.cloudgames.Domain.Aggregates;
 using br.com.fiap.cloudgames.Domain.Repositories;
 using br.com.fiap.cloudgames.Infrastructure.Persistence.Context;
@@ -9,13 +10,11 @@ namespace br.com.fiap.cloudgames.Infrastructure.Persistence.Repositories;
 
 public class UserRepository : IUserRepository
 {
-    private readonly ILogger<UserRepository> _logger;
     private readonly AppDbContext _context;
     private readonly DbSet<User>  _users;
 
-    public UserRepository(ILogger<UserRepository> logger, AppDbContext context)
+    public UserRepository(AppDbContext context)
     {
-        _logger = logger;
         _context = context;
         _users = _context.Set<User>();
     }
@@ -25,8 +24,18 @@ public class UserRepository : IUserRepository
         await _users.AddAsync(user);
     }
 
-    public User GetByIdentityId(string identityId)
+    public async Task<User> GetUserByIdAsync(string userId)
     {
-        return _users.FirstOrDefault(u => u.IdentityId == identityId);
+        return await _users.FirstOrDefaultAsync(u => u.Id == new Guid(userId));
+    }
+
+    public void Update(User user)
+    {
+        _users.Update(user);
+    }
+
+    public async Task<User> GetByIdentityIdAsync(string identityId)
+    {
+        return await _users.FirstOrDefaultAsync(u => u.IdentityId == identityId);
     }
 }

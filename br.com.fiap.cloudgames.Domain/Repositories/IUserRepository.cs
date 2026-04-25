@@ -5,6 +5,7 @@ namespace br.com.fiap.cloudgames.Domain.Repositories;
 public interface IUserRepository
 {
     Task AddAsync(User user);
-    User GetByIdentityId(string identityId);
-
+    Task<User> GetByIdentityIdAsync(string identityId);
+    Task<User> GetUserByIdAsync(string userId);
+    void Update(User user);
 }
