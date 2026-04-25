@@ -23,8 +23,6 @@ public record EmailAddress
         {
             throw new ArgumentException("Email address must be a valid email address", nameof(email));
         }
-        
-        Email = email;
     }
     
     public override String ToString() => Email;

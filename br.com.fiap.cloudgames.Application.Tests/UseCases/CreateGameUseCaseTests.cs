@@ -1,0 +1,84 @@
+using br.com.fiap.cloudgames.Application.Tests.TestData;
+using br.com.fiap.cloudgames.Application.UnitsOfWork;
+using br.com.fiap.cloudgames.Application.UseCases.CreateGame;
+using br.com.fiap.cloudgames.Domain.Repositories;
+using Moq;
+
+namespace br.com.fiap.cloudgames.Application.Tests.UseCases;
+
+public class CreateGameUseCaseTests
+{
+    [Fact]
+    public async Task ExecuteAsync_WhenAgeRatingIsInvalid_ShouldThrow()
+    {
+        var uow = new Mock<IUnitOfWork>(MockBehavior.Strict);
+        var repo = new Mock<IGameRepository>(MockBehavior.Strict);
+        var sut = new CreateGameUseCase(uow.Object, repo.Object);
+
+        var request = ApplicationTestData.ValidCreateGameRequest();
+        request.AgeRating = "INVALID";
+
+        var ex = await Assert.ThrowsAsync<ArgumentException>(() => sut.ExecuteAsync(request));
+        Assert.Contains("Invalid age rating", ex.Message);
+    }
+
+    [Fact]
+    public async Task ExecuteAsync_WhenAnyGameModeIsInvalid_ShouldThrow()
+    {
+        var uow = new Mock<IUnitOfWork>(MockBehavior.Strict);
+        var repo = new Mock<IGameRepository>(MockBehavior.Strict);
+        var sut = new CreateGameUseCase(uow.Object, repo.Object);
+
+        var request = ApplicationTestData.ValidCreateGameRequest();
+        request.GameModes = ["INVALID"];
+
+        var ex = await Assert.ThrowsAsync<ArgumentException>(() => sut.ExecuteAsync(request));
+        Assert.Contains("Invalid game mode", ex.Message);
+    }
+
+    [Fact]
+    public async Task ExecuteAsync_WhenAnyPlatformIsInvalid_ShouldThrow()
+    {
+        var uow = new Mock<IUnitOfWork>(MockBehavior.Strict);
+        var repo = new Mock<IGameRepository>(MockBehavior.Strict);
+        var sut = new CreateGameUseCase(uow.Object, repo.Object);
+
+        var request = ApplicationTestData.ValidCreateGameRequest();
+        request.Platforms = ["INVALID"];
+
+        var ex = await Assert.ThrowsAsync<ArgumentException>(() => sut.ExecuteAsync(request));
+        Assert.Contains("Invalid platform", ex.Message);
+    }
+
+    [Fact]
+    public async Task ExecuteAsync_WithValidRequest_ShouldPersistAndReturnResponse()
+    {
+        var uow = new Mock<IUnitOfWork>(MockBehavior.Strict);
+        var repo = new Mock<IGameRepository>(MockBehavior.Strict);
+
+        repo.Setup(r => r.AddAsync(It.IsAny<br.com.fiap.cloudgames.Domain.Aggregates.Game>()))
+            .Returns(Task.CompletedTask);
+        uow.Setup(x => x.CommitAsync()).Returns(Task.CompletedTask);
+
+        var sut = new CreateGameUseCase(uow.Object, repo.Object);
+        var request = ApplicationTestData.ValidCreateGameRequest();
+
+        var response = await sut.ExecuteAsync(request);
+
+        Assert.False(string.IsNullOrWhiteSpace(response.Id));
+        Assert.Equal(request.Title, response.Title);
+        Assert.Equal(request.Description, response.Description);
+        Assert.Equal(request.Story, response.Story);
+        Assert.Equal(request.Franchise, response.Franchise);
+        Assert.Equal(request.ReleaseDate, response.ReleaseDate);
+        Assert.Equal(request.AgeRating, response.AgeRating);
+        Assert.Contains("Dev Studio", response.Developers);
+        Assert.Contains("Windows", response.Platforms);
+        Assert.Contains("SinglePlayer", response.GameModes);
+        Assert.Contains("Publisher Inc", response.Publisher);
+
+        repo.Verify(r => r.AddAsync(It.IsAny<br.com.fiap.cloudgames.Domain.Aggregates.Game>()), Times.Once);
+        uow.Verify(x => x.CommitAsync(), Times.Once);
+    }
+}
+
