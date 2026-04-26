@@ -2,6 +2,7 @@ using br.com.fiap.cloudgames.Application.Tests.TestData;
 using br.com.fiap.cloudgames.Application.UnitsOfWork;
 using br.com.fiap.cloudgames.Application.UseCases.CreateGame;
 using br.com.fiap.cloudgames.Domain.Repositories;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace br.com.fiap.cloudgames.Application.Tests.UseCases;
@@ -13,7 +14,8 @@ public class CreateGameUseCaseTests
     {
         var uow = new Mock<IUnitOfWork>(MockBehavior.Strict);
         var repo = new Mock<IGameRepository>(MockBehavior.Strict);
-        var sut = new CreateGameUseCase(uow.Object, repo.Object);
+        var logger = new Mock<ILogger<CreateGameUseCase>>(MockBehavior.Loose);
+        var sut = new CreateGameUseCase(uow.Object, repo.Object, logger.Object);
 
         var request = ApplicationTestData.ValidCreateGameRequest();
         request.AgeRating = "INVALID";
@@ -27,7 +29,8 @@ public class CreateGameUseCaseTests
     {
         var uow = new Mock<IUnitOfWork>(MockBehavior.Strict);
         var repo = new Mock<IGameRepository>(MockBehavior.Strict);
-        var sut = new CreateGameUseCase(uow.Object, repo.Object);
+        var logger = new Mock<ILogger<CreateGameUseCase>>(MockBehavior.Loose);
+        var sut = new CreateGameUseCase(uow.Object, repo.Object, logger.Object);
 
         var request = ApplicationTestData.ValidCreateGameRequest();
         request.GameModes = ["INVALID"];
@@ -41,7 +44,8 @@ public class CreateGameUseCaseTests
     {
         var uow = new Mock<IUnitOfWork>(MockBehavior.Strict);
         var repo = new Mock<IGameRepository>(MockBehavior.Strict);
-        var sut = new CreateGameUseCase(uow.Object, repo.Object);
+        var logger = new Mock<ILogger<CreateGameUseCase>>(MockBehavior.Loose);
+        var sut = new CreateGameUseCase(uow.Object, repo.Object, logger.Object);
 
         var request = ApplicationTestData.ValidCreateGameRequest();
         request.Platforms = ["INVALID"];
@@ -55,12 +59,13 @@ public class CreateGameUseCaseTests
     {
         var uow = new Mock<IUnitOfWork>(MockBehavior.Strict);
         var repo = new Mock<IGameRepository>(MockBehavior.Strict);
+        var logger = new Mock<ILogger<CreateGameUseCase>>(MockBehavior.Loose);
 
         repo.Setup(r => r.AddAsync(It.IsAny<br.com.fiap.cloudgames.Domain.Aggregates.Game>()))
             .Returns(Task.CompletedTask);
         uow.Setup(x => x.CommitAsync()).Returns(Task.CompletedTask);
 
-        var sut = new CreateGameUseCase(uow.Object, repo.Object);
+        var sut = new CreateGameUseCase(uow.Object, repo.Object, logger.Object);
         var request = ApplicationTestData.ValidCreateGameRequest();
 
         var response = await sut.ExecuteAsync(request);

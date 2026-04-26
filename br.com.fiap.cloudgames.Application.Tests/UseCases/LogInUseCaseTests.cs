@@ -4,6 +4,7 @@ using br.com.fiap.cloudgames.Application.UseCases.LogIn;
 using br.com.fiap.cloudgames.Domain.Aggregates;
 using br.com.fiap.cloudgames.Domain.Repositories;
 using br.com.fiap.cloudgames.Domain.ValueObjects;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace br.com.fiap.cloudgames.Application.Tests.UseCases;
@@ -16,6 +17,7 @@ public class LogInUseCaseTests
         var auth = new Mock<IUserAuthService>(MockBehavior.Strict);
         var repo = new Mock<IUserRepository>(MockBehavior.Strict);
         var tokens = new Mock<ITokenService>(MockBehavior.Strict);
+        var logger = new Mock<ILogger<LogInUseCase>>(MockBehavior.Loose);
 
         var request = ApplicationTestData.ValidLogInRequest();
         var normalizedEmail = new EmailAddress(request.email).Email;
@@ -28,7 +30,7 @@ public class LogInUseCaseTests
 
         tokens.Setup(x => x.GenerateTokenAsync(user)).ReturnsAsync("jwt-token");
 
-        var sut = new LogInUseCase(auth.Object, repo.Object, tokens.Object);
+        var sut = new LogInUseCase(auth.Object, repo.Object, tokens.Object, logger.Object);
 
         var response = await sut.ExecuteAsync(request);
 

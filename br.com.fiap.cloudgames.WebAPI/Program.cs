@@ -22,6 +22,15 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Logging
+builder.Logging.ClearProviders();
+builder.Logging.AddSimpleConsole(options =>
+{
+    options.IncludeScopes = true;
+    options.SingleLine = true;
+    options.TimestampFormat = "yyyy-MM-ddTHH:mm:ss.fffzzz ";
+});
+
 //Settings
 builder.Services.Configure<JwtTokenSettings>(builder.Configuration.GetSection("Jwt"));
 
@@ -136,13 +145,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-
-
-//TODO: Implementar os Gets
-
-//TODO: Ajustar logs
-//TODO: Ajustar Domain Exceptions
 
 
 //TODO: Criar Testes de Integracao

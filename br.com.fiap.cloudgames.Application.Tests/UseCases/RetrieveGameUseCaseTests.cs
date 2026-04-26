@@ -3,6 +3,7 @@ using br.com.fiap.cloudgames.Domain.Aggregates;
 using br.com.fiap.cloudgames.Domain.Entities;
 using br.com.fiap.cloudgames.Domain.Enums;
 using br.com.fiap.cloudgames.Domain.Repositories;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace br.com.fiap.cloudgames.Application.Tests.UseCases;
@@ -13,7 +14,8 @@ public class RetrieveGameUseCaseTests
     public async Task ExecuteAsync_WhenGameIdIsInvalid_ShouldThrow()
     {
         var repo = new Mock<IGameRepository>(MockBehavior.Strict);
-        var sut = new RetrieveGameUseCase(repo.Object);
+        var logger = new Mock<ILogger<RetrieveGameUseCase>>(MockBehavior.Loose);
+        var sut = new RetrieveGameUseCase(repo.Object, logger.Object);
 
         var request = new RetrieveGameRequest { GameId = "not-a-guid" };
 
@@ -25,7 +27,8 @@ public class RetrieveGameUseCaseTests
     public async Task ExecuteAsync_WhenGameDoesNotExist_ShouldThrow()
     {
         var repo = new Mock<IGameRepository>(MockBehavior.Strict);
-        var sut = new RetrieveGameUseCase(repo.Object);
+        var logger = new Mock<ILogger<RetrieveGameUseCase>>(MockBehavior.Loose);
+        var sut = new RetrieveGameUseCase(repo.Object, logger.Object);
 
         var gameId = Guid.NewGuid();
         repo.Setup(x => x.GetByIdAsync(gameId)).ReturnsAsync((Game?)null);
@@ -40,7 +43,8 @@ public class RetrieveGameUseCaseTests
     public async Task ExecuteAsync_WithValidRequest_ShouldReturnGame()
     {
         var repo = new Mock<IGameRepository>(MockBehavior.Strict);
-        var sut = new RetrieveGameUseCase(repo.Object);
+        var logger = new Mock<ILogger<RetrieveGameUseCase>>(MockBehavior.Loose);
+        var sut = new RetrieveGameUseCase(repo.Object, logger.Object);
 
         var game = Game.CreateGame(
             "My Game",

@@ -6,6 +6,7 @@ using br.com.fiap.cloudgames.Domain.Aggregates;
 using br.com.fiap.cloudgames.Domain.Enums;
 using br.com.fiap.cloudgames.Domain.Repositories;
 using br.com.fiap.cloudgames.Domain.ValueObjects;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace br.com.fiap.cloudgames.Application.Tests.UseCases;
@@ -18,6 +19,7 @@ public class ChangeUserRoleUseCaseTests
         var repo = new Mock<IUserRepository>(MockBehavior.Strict);
         var auth = new Mock<IUserAuthService>(MockBehavior.Strict);
         var uow = new Mock<IUnitOfWork>(MockBehavior.Strict);
+        var logger = new Mock<ILogger<ChangeUserRoleUseCase>>(MockBehavior.Loose);
 
         var request = ApplicationTestData.ValidChangeUserRoleRequest();
 
@@ -25,7 +27,7 @@ public class ChangeUserRoleUseCaseTests
         repo.Setup(x => x.GetUserByIdAsync(Guid.Parse(request.UserId))).ReturnsAsync((User)null!);
         uow.Setup(x => x.RollbackAsync()).Returns(Task.CompletedTask);
 
-        var sut = new ChangeUserRoleUseCase(repo.Object, auth.Object, uow.Object);
+        var sut = new ChangeUserRoleUseCase(repo.Object, auth.Object, uow.Object, logger.Object);
 
         var ex = await Assert.ThrowsAsync<ArgumentException>(() => sut.ExecuteAsync(request));
         Assert.Contains("User not found", ex.Message);
@@ -43,6 +45,7 @@ public class ChangeUserRoleUseCaseTests
         var repo = new Mock<IUserRepository>(MockBehavior.Strict);
         var auth = new Mock<IUserAuthService>(MockBehavior.Strict);
         var uow = new Mock<IUnitOfWork>(MockBehavior.Strict);
+        var logger = new Mock<ILogger<ChangeUserRoleUseCase>>(MockBehavior.Loose);
 
         var request = ApplicationTestData.ValidChangeUserRoleRequest();
         var user = User.Create(new Name("Anderson", "Silva"), new EmailAddress("anderson.silva@example.com"), "identity-123");
@@ -53,7 +56,7 @@ public class ChangeUserRoleUseCaseTests
         repo.Setup(x => x.Update(It.IsAny<User>()));
         uow.Setup(x => x.CommitAsync()).Returns(Task.CompletedTask);
 
-        var sut = new ChangeUserRoleUseCase(repo.Object, auth.Object, uow.Object);
+        var sut = new ChangeUserRoleUseCase(repo.Object, auth.Object, uow.Object, logger.Object);
 
         var response = await sut.ExecuteAsync(request);
 

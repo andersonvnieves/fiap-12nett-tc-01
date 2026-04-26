@@ -2,6 +2,7 @@ using br.com.fiap.cloudgames.Application.UseCases.RetrieveUser;
 using br.com.fiap.cloudgames.Domain.Aggregates;
 using br.com.fiap.cloudgames.Domain.Repositories;
 using br.com.fiap.cloudgames.Domain.ValueObjects;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace br.com.fiap.cloudgames.Application.Tests.UseCases;
@@ -12,7 +13,8 @@ public class RetrieveUserUseCaseTests
     public async Task ExecuteAsync_WhenUserIdIsInvalid_ShouldThrow()
     {
         var repo = new Mock<IUserRepository>(MockBehavior.Strict);
-        var sut = new RetrieveUserUseCase(repo.Object);
+        var logger = new Mock<ILogger<RetrieveUserUseCase>>(MockBehavior.Loose);
+        var sut = new RetrieveUserUseCase(repo.Object, logger.Object);
 
         var request = new RetrieveUserRequest { UserId = "not-a-guid" };
 
@@ -24,7 +26,8 @@ public class RetrieveUserUseCaseTests
     public async Task ExecuteAsync_WhenUserDoesNotExist_ShouldThrow()
     {
         var repo = new Mock<IUserRepository>(MockBehavior.Strict);
-        var sut = new RetrieveUserUseCase(repo.Object);
+        var logger = new Mock<ILogger<RetrieveUserUseCase>>(MockBehavior.Loose);
+        var sut = new RetrieveUserUseCase(repo.Object, logger.Object);
 
         var userId = Guid.NewGuid();
         repo.Setup(x => x.GetUserByIdAsync(userId)).ReturnsAsync((User)null!);
@@ -39,7 +42,8 @@ public class RetrieveUserUseCaseTests
     public async Task ExecuteAsync_WithValidRequest_ShouldReturnUser()
     {
         var repo = new Mock<IUserRepository>(MockBehavior.Strict);
-        var sut = new RetrieveUserUseCase(repo.Object);
+        var logger = new Mock<ILogger<RetrieveUserUseCase>>(MockBehavior.Loose);
+        var sut = new RetrieveUserUseCase(repo.Object, logger.Object);
 
         var user = User.Create(
             new Name("Anderson", "Silva"),

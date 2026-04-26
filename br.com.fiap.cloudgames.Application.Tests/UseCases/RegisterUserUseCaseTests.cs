@@ -3,6 +3,7 @@ using br.com.fiap.cloudgames.Application.Tests.TestData;
 using br.com.fiap.cloudgames.Application.UnitsOfWork;
 using br.com.fiap.cloudgames.Application.UseCases.RegisterUser;
 using br.com.fiap.cloudgames.Domain.Repositories;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace br.com.fiap.cloudgames.Application.Tests.UseCases;
@@ -15,6 +16,7 @@ public class RegisterUserUseCaseTests
         var auth = new Mock<IUserAuthService>(MockBehavior.Strict);
         var uow = new Mock<IUnitOfWork>(MockBehavior.Strict);
         var repo = new Mock<IUserRepository>(MockBehavior.Strict);
+        var logger = new Mock<ILogger<RegisterUserUseCase>>(MockBehavior.Loose);
 
         var request = ApplicationTestData.ValidRegisterUserRequest();
 
@@ -25,7 +27,7 @@ public class RegisterUserUseCaseTests
             .Returns(Task.CompletedTask);
         uow.Setup(x => x.CommitAsync()).Returns(Task.CompletedTask);
 
-        var sut = new RegisterUserUseCase(auth.Object, uow.Object, repo.Object);
+        var sut = new RegisterUserUseCase(auth.Object, uow.Object, repo.Object, logger.Object);
 
         var response = await sut.ExecuteAsync(request);
 
@@ -48,6 +50,7 @@ public class RegisterUserUseCaseTests
         var auth = new Mock<IUserAuthService>(MockBehavior.Strict);
         var uow = new Mock<IUnitOfWork>(MockBehavior.Strict);
         var repo = new Mock<IUserRepository>(MockBehavior.Strict);
+        var logger = new Mock<ILogger<RegisterUserUseCase>>(MockBehavior.Loose);
 
         var request = ApplicationTestData.ValidRegisterUserRequest();
 
@@ -56,7 +59,7 @@ public class RegisterUserUseCaseTests
             .ThrowsAsync(new InvalidOperationException("boom"));
         uow.Setup(x => x.RollbackAsync()).Returns(Task.CompletedTask);
 
-        var sut = new RegisterUserUseCase(auth.Object, uow.Object, repo.Object);
+        var sut = new RegisterUserUseCase(auth.Object, uow.Object, repo.Object, logger.Object);
 
         await Assert.ThrowsAsync<InvalidOperationException>(() => sut.ExecuteAsync(request));
 
