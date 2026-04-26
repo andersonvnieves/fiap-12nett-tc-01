@@ -7,6 +7,8 @@ using br.com.fiap.cloudgames.Application.UseCases.LogIn;
 using br.com.fiap.cloudgames.Application.UseCases.RegisterUser;
 using br.com.fiap.cloudgames.Application.UnitsOfWork;
 using br.com.fiap.cloudgames.Application.UseCases.ChangeUserRole;
+using br.com.fiap.cloudgames.Application.UseCases.RetrieveGame;
+using br.com.fiap.cloudgames.Application.UseCases.RetrieveUser;
 using br.com.fiap.cloudgames.Infrastructure.Config;
 using br.com.fiap.cloudgames.Infrastructure.Persistence;
 using br.com.fiap.cloudgames.Infrastructure.Persistence.Context;
@@ -77,6 +79,8 @@ builder.Services.AddScoped<CreateGameUseCase>();
 builder.Services.AddScoped<LogInUseCase>();
 builder.Services.AddScoped<RegisterUserUseCase>();
 builder.Services.AddScoped<ChangeUserRoleUseCase>();
+builder.Services.AddScoped<RetrieveUserUseCase>();
+builder.Services.AddScoped<RetrieveGameUseCase>();
 
 //Services
 builder.Services.AddScoped<IUserAuthService, IdentityUserAuthService>();
@@ -135,11 +139,12 @@ app.Run();
 
 
 
-//TODO: Implementar os Gets  com CQRS
-//TODO: Ajustar logs
-//TODO: Ajustar tratamentos de execoes, tentar domain exceptions e melhorar ou centralizar mensagens de erro
+//TODO: Implementar os Gets
 
-//TODO: Criar projeto de UnitTest do Domain
+//TODO: Ajustar logs
+//TODO: Ajustar Domain Exceptions
+
+
 //TODO: Criar Testes de Integracao
 //TODO: Tentar implementar BDD
 

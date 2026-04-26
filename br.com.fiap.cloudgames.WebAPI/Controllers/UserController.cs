@@ -1,5 +1,6 @@
 using br.com.fiap.cloudgames.Application.UseCases.ChangeUserRole;
 using br.com.fiap.cloudgames.Application.UseCases.RegisterUser;
+using br.com.fiap.cloudgames.Application.UseCases.RetrieveUser;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,11 +12,15 @@ namespace br.com.fiap.cloudgames.WebAPI.Controllers
     {
         private readonly RegisterUserUseCase _registerUserUseCase;
         private readonly ChangeUserRoleUseCase _changeUserRoleUseCase;
+        private readonly RetrieveUserUseCase _retrieveUserUseCase;
         private const string ADMIN_ROLE = "admin";
-        public UserController(RegisterUserUseCase registerUserUseCase,  ChangeUserRoleUseCase changeUserRoleUseCase)
+        public UserController(RegisterUserUseCase registerUserUseCase,
+            ChangeUserRoleUseCase changeUserRoleUseCase,
+            RetrieveUserUseCase retrieveUserUseCase)
         {
             _registerUserUseCase = registerUserUseCase;
             _changeUserRoleUseCase = changeUserRoleUseCase;
+            _retrieveUserUseCase = retrieveUserUseCase;
         }
         
         [HttpPost]
@@ -33,10 +38,12 @@ namespace br.com.fiap.cloudgames.WebAPI.Controllers
             return Ok(result);
         }
         
+        [Authorize(Roles = ADMIN_ROLE)]
         [HttpGet]
-        public async Task<IActionResult> Get(String Id)
+        public async Task<IActionResult> Get([FromQuery] String Id)
         {
-            return Ok();
+            var result = await _retrieveUserUseCase.ExecuteAsync(new RetrieveUserRequest() { UserId = Id });
+            return Ok(result);
         }
     }
 }

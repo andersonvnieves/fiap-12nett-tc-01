@@ -23,4 +23,9 @@ public class GameRepository : IGameRepository
     {
         await _games.AddAsync(game);
     }
+
+    public async Task<Game?> GetByIdAsync(Guid id)
+    {
+        return await _games.FirstOrDefaultAsync(g => g.Id == id);
+    }
 }

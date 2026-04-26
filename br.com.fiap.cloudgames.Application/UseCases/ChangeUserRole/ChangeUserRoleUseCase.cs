@@ -23,14 +23,18 @@ public class ChangeUserRoleUseCase
         await _unitOfWork.BeginTransactionAsync();
         try
         {
-            var user = await _userRepository.GetUserByIdAsync(request.UserId);
+            var parseResult = Guid.TryParse(request.UserId, out var UserId);
+            if (!parseResult)
+                throw new ArgumentException("Invalid UserId Format");
+            
+            var user = await _userRepository.GetUserByIdAsync(UserId);
             if (user == null)
                 throw new ArgumentException("User not found.");
 
-            var role = Enum.Parse<UserRoles>(request.Role.ToLower());
-            await _userAuthService.ReplaceUserRoleAsync(user.IdentityId, role.ToString().ToLower());
+            var role = Enum.Parse<UserRoles>(request.Role, ignoreCase: true);
+            await _userAuthService.ReplaceUserRoleAsync(user.IdentityId, role.ToString().ToLowerInvariant());
 
-            user.Role = Enum.Parse<UserRoles>(request.Role);
+            user.Role = role;
             _userRepository.Update(user);
 
             await _unitOfWork.CommitAsync();

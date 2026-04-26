@@ -1,10 +1,7 @@
-using System.Diagnostics;
-using System.Security.Cryptography.X509Certificates;
 using br.com.fiap.cloudgames.Domain.Aggregates;
 using br.com.fiap.cloudgames.Domain.Repositories;
 using br.com.fiap.cloudgames.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace br.com.fiap.cloudgames.Infrastructure.Persistence.Repositories;
 
@@ -24,9 +21,9 @@ public class UserRepository : IUserRepository
         await _users.AddAsync(user);
     }
 
-    public async Task<User> GetUserByIdAsync(string userId)
+    public async Task<User> GetUserByIdAsync(Guid userId)
     {
-        return await _users.FirstOrDefaultAsync(u => u.Id == new Guid(userId));
+        return await _users.FirstOrDefaultAsync(u => u.Id == userId);
     }
 
     public void Update(User user)

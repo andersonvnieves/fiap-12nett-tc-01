@@ -6,6 +6,6 @@ public interface IUserRepository
 {
     Task AddAsync(User user);
     Task<User> GetByIdentityIdAsync(string identityId);
-    Task<User> GetUserByIdAsync(string userId);
+    Task<User> GetUserByIdAsync(Guid userId);
     void Update(User user);
 }

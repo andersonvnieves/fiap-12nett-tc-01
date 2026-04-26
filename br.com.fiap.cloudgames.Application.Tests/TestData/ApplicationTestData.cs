@@ -37,7 +37,7 @@ public static class ApplicationTestData
 
     public static ChangeUserRoleRequest ValidChangeUserRoleRequest() => new()
     {
-        UserId = "user-1",
+        UserId = Guid.NewGuid().ToString(),
         Role = "admin"
     };
 }

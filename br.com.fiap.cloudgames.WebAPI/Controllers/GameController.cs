@@ -1,4 +1,5 @@
 using br.com.fiap.cloudgames.Application.UseCases.CreateGame;
+using br.com.fiap.cloudgames.Application.UseCases.RetrieveGame;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,11 +9,13 @@ namespace br.com.fiap.cloudgames.WebAPI.Controllers
     [ApiController]
     public class GameController : ControllerBase
     {
-        public readonly  CreateGameUseCase _createGameUseCase;
+        private readonly  CreateGameUseCase _createGameUseCase;
+        private readonly  RetrieveGameUseCase _retrieveGameUseCase;
         private const string ADMIN_ROLE = "admin";
-        public GameController(CreateGameUseCase createGameUseCase)
+        public GameController(CreateGameUseCase createGameUseCase,  RetrieveGameUseCase retrieveGameUseCase)
         {
             _createGameUseCase = createGameUseCase;
+            _retrieveGameUseCase = retrieveGameUseCase;
         }
         
         [Authorize(Roles = ADMIN_ROLE)]
@@ -25,9 +28,10 @@ namespace br.com.fiap.cloudgames.WebAPI.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> Get(String Id)
+        public async Task<IActionResult> Get([FromQuery] String Id)
         {
-            return Ok();
+            var result = await _retrieveGameUseCase.ExecuteAsync(new RetrieveGameRequest() { GameId = Id });
+            return Ok(result);
         }
     }
 }

@@ -22,7 +22,7 @@ public class ChangeUserRoleUseCaseTests
         var request = ApplicationTestData.ValidChangeUserRoleRequest();
 
         uow.Setup(x => x.BeginTransactionAsync()).Returns(Task.CompletedTask);
-        repo.Setup(x => x.GetUserByIdAsync(request.UserId)).ReturnsAsync((User)null!);
+        repo.Setup(x => x.GetUserByIdAsync(Guid.Parse(request.UserId))).ReturnsAsync((User)null!);
         uow.Setup(x => x.RollbackAsync()).Returns(Task.CompletedTask);
 
         var sut = new ChangeUserRoleUseCase(repo.Object, auth.Object, uow.Object);
@@ -48,7 +48,7 @@ public class ChangeUserRoleUseCaseTests
         var user = User.Create(new Name("Anderson", "Silva"), new EmailAddress("anderson.silva@example.com"), "identity-123");
 
         uow.Setup(x => x.BeginTransactionAsync()).Returns(Task.CompletedTask);
-        repo.Setup(x => x.GetUserByIdAsync(request.UserId)).ReturnsAsync(user);
+        repo.Setup(x => x.GetUserByIdAsync(Guid.Parse(request.UserId))).ReturnsAsync(user);
         auth.Setup(x => x.ReplaceUserRoleAsync(user.IdentityId, request.Role.ToLower())).Returns(Task.CompletedTask);
         repo.Setup(x => x.Update(It.IsAny<User>()));
         uow.Setup(x => x.CommitAsync()).Returns(Task.CompletedTask);
