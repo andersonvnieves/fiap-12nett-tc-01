@@ -30,8 +30,7 @@ namespace br.com.fiap.cloudgames.WebAPI.Controllers
             var result = await _createGameUseCase.ExecuteAsync(request);
             return CreatedAtAction(nameof(Get), new { id = result.Id }, result);
         }
-
-        [Authorize]
+        
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] String Id)
         {

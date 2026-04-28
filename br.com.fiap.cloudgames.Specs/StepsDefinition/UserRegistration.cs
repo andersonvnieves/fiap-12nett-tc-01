@@ -1,3 +1,11 @@
+using br.com.fiap.cloudgames.Application.Services;
+using br.com.fiap.cloudgames.Application.UnitsOfWork;
+using br.com.fiap.cloudgames.Application.UseCases.User.RegisterUser;
+using br.com.fiap.cloudgames.Domain.Aggregates;
+using br.com.fiap.cloudgames.Domain.Repositories;
+using br.com.fiap.cloudgames.Specs.ContextData;
+using Microsoft.Extensions.Logging;
+using Moq;
 using Reqnroll;
 
 namespace br.com.fiap.cloudgames.Specs.StepsDefinition;
@@ -5,45 +13,94 @@ namespace br.com.fiap.cloudgames.Specs.StepsDefinition;
 [Binding]
 public class UserRegistration
 {
-    [Given("a user with first name {string}, last name {string}, email {string} and password {string}")]
-    public void GivenAUserWithFirstNameLastNameEmailAndPassword(string first, string last, string p2, string p3)
+    private readonly UserRegistrationContextData _userRegistrationContextData;
+    private readonly Mock<IUserRepository> _userRepositoryMock = new();
+    private readonly Mock<IUserAuthService> _userAuthServiceMock = new();
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
+    private readonly Mock<ILogger<RegisterUserUseCase>>  _loggerMock = new();
+    private RegisterUserUseCase _registerUserUseCase;
+
+    public UserRegistration()
     {
-        ScenarioContext.StepIsPending();
+        _userRegistrationContextData = new();
+        
+        _registerUserUseCase = new RegisterUserUseCase(
+            _userAuthServiceMock.Object,
+            _unitOfWorkMock.Object,
+            _userRepositoryMock.Object,
+            _loggerMock.Object
+        );
+    }
+    
+    
+    [Given("a user with first name {string}, last name {string}, email {string} and password {string}")]
+    public void GivenAUserWithFirstNameLastNameEmailAndPassword(string first, string last, string email, string password)
+    {
+        _userRegistrationContextData.Request = new RegisterUserRequest()
+        {
+            FirstName = first,
+            LastName = last,
+            Email = email,
+            Password = password
+        };
+
+        _unitOfWorkMock
+            .Setup(x => x.BeginTransactionAsync());
+        _userAuthServiceMock
+            .Setup(x => x.CreateUserAsync(email, password, "user"))
+            .ReturnsAsync(Guid.NewGuid().ToString());
+        _userRepositoryMock
+            .Setup(x => x.AddAsync(It.IsAny<User>()));
+        _unitOfWorkMock.Setup(x => x.CommitAsync());
+        _unitOfWorkMock.Setup(x => x.RollbackAsync());
     }
 
     [When("the user submits the registration request")]
-    public void WhenTheUserSubmitsTheRegistrationRequest()
+    public async Task WhenTheUserSubmitsTheRegistrationRequest()
     {
-        ScenarioContext.StepIsPending();
+        try
+        {
+            _userRegistrationContextData.Response = await _registerUserUseCase.ExecuteAsync(_userRegistrationContextData.Request);
+        }
+        catch (Exception ex)
+        {
+            _userRegistrationContextData.Exception = ex;
+        }
     }
 
     [Then("the account should be created successfully")]
     public void ThenTheAccountShouldBeCreatedSuccessfully()
     {
-        ScenarioContext.StepIsPending();
+        Assert.Null(_userRegistrationContextData.Exception);
+        Assert.NotNull(_userRegistrationContextData.Response);
     }
 
     [Then("the response should contain the user id")]
     public void ThenTheResponseShouldContainTheUserId()
     {
-        ScenarioContext.StepIsPending();
+        Assert.True(Guid.TryParse(_userRegistrationContextData.Response.Id,  out Guid id));
     }
 
     [Given("a user with email {string} already exists")]
-    public void GivenAUserWithEmailAlreadyExists(string p0)
+    public void GivenAUserWithEmailAlreadyExists(string email)
     {
-        ScenarioContext.StepIsPending();
+        _userAuthServiceMock.Reset();
+        _userAuthServiceMock
+            .Setup(x => x.CreateUserAsync(email, _userRegistrationContextData.Request.Password, "user"))
+            .Throws(new Exception("Email already in use"));
     }
 
     [Then("the registration should fail")]
     public void ThenTheRegistrationShouldFail()
     {
-        ScenarioContext.StepIsPending();
+        Assert.NotNull(_userRegistrationContextData.Exception);
+        Assert.Null(_userRegistrationContextData.Response);
     }
 
     [Then("an error {string} should be returned")]
-    public void ThenAnErrorShouldBeReturned(string p0)
+    public void ThenAnErrorShouldBeReturned(string error)
     {
-        ScenarioContext.StepIsPending();
+        Assert.NotNull(_userRegistrationContextData.Exception);
+        Assert.Equal(error, _userRegistrationContextData.Exception.Message);
     }
 }

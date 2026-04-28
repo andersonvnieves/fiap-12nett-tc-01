@@ -193,11 +193,11 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             {
                 await this.ScenarioStartAsync();
 #line 10
-    await testRunner.GivenAsync("a user with email \"spec@test.com\" already exists", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+    await testRunner.GivenAsync("a user with first name \"First\", last name \"Last\", email \"spec@test.com\" and passw" +
+                        "ord \"Password123!\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 11
-    await testRunner.AndAsync("a user with first name \"First\", last name \"Last\", email \"spec@test.com\" and passw" +
-                        "ord \"Password123!\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.AndAsync("a user with email \"spec@test.com\" already exists", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 12
     await testRunner.WhenAsync("the user submits the registration request", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");

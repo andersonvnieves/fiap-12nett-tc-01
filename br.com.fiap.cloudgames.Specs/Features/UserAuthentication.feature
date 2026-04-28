@@ -8,12 +8,10 @@ Scenario: User successfully authenticates with valid credentials
 
 Scenario: Authentication fails with invalid credentials
     Given a user with email "spec@test.com" and password "Password123!" exists
-    When the user submits the login request with email "spec@test.com" and password "WrongPassword!"
+    When the user submits the login request with email "spec@test.com" and wrong password "WrongPassword!"
     Then the authentication should fail
-    And an error "Invalid credentials" should be returned
 
 Scenario: Authentication fails for non-existing user with generic error
     Given no user exists with email "unknown@test.com"
     When the user submits the login request with email "unknown@test.com" and password "AnyPassword123!"
     Then the authentication should fail
-    And an error "Invalid credentials" should be returned

@@ -15,6 +15,7 @@ using br.com.fiap.cloudgames.Infrastructure.Persistence;
 using br.com.fiap.cloudgames.Infrastructure.Persistence.Context;
 using br.com.fiap.cloudgames.Infrastructure.Persistence.Repositories;
 using br.com.fiap.cloudgames.Infrastructure.Service;
+using br.com.fiap.cloudgames.WebAPI.GraphQL.Queries;
 using br.com.fiap.cloudgames.WebAPI.Middlewares;
 using br.com.fiap.cloudgames.WebAPI.Setup;
 using Microsoft.AspNetCore.Identity;
@@ -114,6 +115,11 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+//GraphQL
+builder.Services
+    .AddGraphQLServer()
+    .AddQueryType<GameQuery>();
+
 var app = builder.Build();
 
 //Seed Identity
@@ -146,14 +152,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.MapGraphQL();
+
 app.Run();
-
-
-//TODO: Criar Testes de Integracao
-
-//TODO: Extra, CQRS com Dapper
-//TODO: Extra, GraphQL
-//TODO: MongoDB
-
-
-//TODO: Extra do Extra, tentar fazer tesde de performace com o K6

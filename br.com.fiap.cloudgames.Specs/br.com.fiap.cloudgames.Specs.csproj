@@ -10,6 +10,7 @@
     <ItemGroup>
         <PackageReference Include="coverlet.collector" Version="6.0.4"/>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1"/>
+        <PackageReference Include="Moq" Version="4.20.72" />
         <PackageReference Include="Reqnroll.Tools.MsBuild.Generation" Version="3.3.4" />
         <PackageReference Include="Reqnroll.xUnit" Version="3.3.4" />
         <PackageReference Include="xunit" Version="2.9.3"/>
@@ -18,6 +19,11 @@
 
     <ItemGroup>
         <Using Include="Xunit"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\br.com.fiap.cloudgames.Application\br.com.fiap.cloudgames.Application.csproj" />
+      <ProjectReference Include="..\br.com.fiap.cloudgames.Domain\br.com.fiap.cloudgames.Domain.csproj" />
     </ItemGroup>
 
 </Project>

@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="HotChocolate.AspNetCore" Version="16.0.0-rc.1.43" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.2" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.0"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.2" />
@@ -25,6 +26,10 @@
       <ProjectReference Include="..\br.com.fiap.cloudgames.Application\br.com.fiap.cloudgames.Application.csproj" />
       <ProjectReference Include="..\br.com.fiap.cloudgames.Domain\br.com.fiap.cloudgames.Domain.csproj" />
       <ProjectReference Include="..\br.com.fiap.cloudgames.Infrastructure\br.com.fiap.cloudgames.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="GraphQL\Mutations\" />
     </ItemGroup>
 
 </Project>
