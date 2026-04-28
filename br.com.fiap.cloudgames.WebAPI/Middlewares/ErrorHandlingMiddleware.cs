@@ -1,6 +1,7 @@
 using System.Net;
 using System.Text.Json;
 using System.Security.Claims;
+using br.com.fiap.cloudgames.Domain.Exceptions;
 
 namespace br.com.fiap.cloudgames.WebAPI.Middlewares;
 
@@ -64,27 +65,58 @@ public class ErrorHandlingMiddleware
         if (context.Response.HasStarted)
             throw exception;
 
-        var statusCode = exception switch
+        HttpStatusCode statusCode;
+        object response;
+        switch (exception)
         {
-            ArgumentNullException => HttpStatusCode.BadRequest,
-            ArgumentException => HttpStatusCode.BadRequest,
-            ApplicationException => HttpStatusCode.BadRequest,
-            UnauthorizedAccessException => HttpStatusCode.Unauthorized,
-            _ => HttpStatusCode.InternalServerError
-        };
-        var response = new
-        {
-            message = exception.Message,
-            status = (int)statusCode,
-            correlationId
-        };
+            case DomainException domainEx:
+                statusCode = HttpStatusCode.BadRequest;
+                response = new
+                {
+                    message = "Business validation failed",
+                    errors = domainEx.Errors,
+                    status = (int)statusCode,
+                    correlationId
+                };
+                break;
+
+            case ArgumentNullException:
+            case ArgumentException:
+            case ApplicationException:
+                statusCode = HttpStatusCode.BadRequest;
+                response = new
+                {
+                    message = exception.Message,
+                    errors = new[] { exception.Message },
+                    status = (int)statusCode,
+                    correlationId
+                };
+                break;
+            case UnauthorizedAccessException:
+                statusCode = HttpStatusCode.Unauthorized;
+                response = new
+                {
+                    message = "Unauthorized",
+                    status = (int)statusCode,
+                    correlationId
+                };
+                break;
+            default:
+                statusCode = HttpStatusCode.InternalServerError;
+                response = new
+                {
+                    message = "Unexpected error",
+                    status = (int)statusCode,
+                    correlationId
+                };
+                break;
+        }
+
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)statusCode;
         var json = JsonSerializer.Serialize(response);
         await context.Response.WriteAsync(json);
     }
-    
-    
 }
 
 public static class ErrorHandlingMiddlewareExtensions

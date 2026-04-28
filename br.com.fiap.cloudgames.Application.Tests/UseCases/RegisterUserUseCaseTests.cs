@@ -1,7 +1,7 @@
 using br.com.fiap.cloudgames.Application.Services;
 using br.com.fiap.cloudgames.Application.Tests.TestData;
 using br.com.fiap.cloudgames.Application.UnitsOfWork;
-using br.com.fiap.cloudgames.Application.UseCases.RegisterUser;
+using br.com.fiap.cloudgames.Application.UseCases.User.RegisterUser;
 using br.com.fiap.cloudgames.Domain.Repositories;
 using Microsoft.Extensions.Logging;
 using Moq;

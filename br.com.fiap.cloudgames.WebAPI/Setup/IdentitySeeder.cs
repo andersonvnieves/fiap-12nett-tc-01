@@ -1,6 +1,6 @@
 using br.com.fiap.cloudgames.Application.UnitsOfWork;
-using br.com.fiap.cloudgames.Application.UseCases.ChangeUserRole;
-using br.com.fiap.cloudgames.Application.UseCases.RegisterUser;
+using br.com.fiap.cloudgames.Application.UseCases.User.ChangeUserRole;
+using br.com.fiap.cloudgames.Application.UseCases.User.RegisterUser;
 using br.com.fiap.cloudgames.Domain.Enums;
 using Microsoft.AspNetCore.Identity;
 

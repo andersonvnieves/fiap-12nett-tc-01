@@ -28,4 +28,9 @@ public class GameRepository : IGameRepository
     {
         return await _games.FirstOrDefaultAsync(g => g.Id == id);
     }
+
+    public void Update(Game game)
+    {
+        _games.Update(game);
+    }
 }

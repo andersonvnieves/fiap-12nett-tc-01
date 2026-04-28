@@ -1,4 +1,5 @@
 using br.com.fiap.cloudgames.Domain.Enums;
+using br.com.fiap.cloudgames.Domain.Exceptions;
 using br.com.fiap.cloudgames.Domain.ValueObjects;
 
 namespace br.com.fiap.cloudgames.Domain.Aggregates;
@@ -36,12 +37,19 @@ public class User
 
     private static void Validate(Name name, EmailAddress email, String identityId)
     {
+        var errors = new List<string>();
+
         if (name is null)
-            throw new ArgumentNullException(nameof(name));
+            errors.Add("Name is required.");
+
         if (email is null)
-            throw new ArgumentNullException(nameof(email));
-        if (String.IsNullOrEmpty(identityId))
-            throw new ArgumentNullException(nameof(identityId));
+            errors.Add("Email is required.");
+
+        if (String.IsNullOrWhiteSpace(identityId))
+            errors.Add("IdentityId is required.");
+
+        if (errors.Any())
+            throw new DomainException(errors);
     }
     
 }

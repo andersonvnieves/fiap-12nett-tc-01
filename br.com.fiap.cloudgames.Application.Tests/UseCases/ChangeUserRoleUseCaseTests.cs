@@ -1,7 +1,7 @@
 using br.com.fiap.cloudgames.Application.Services;
 using br.com.fiap.cloudgames.Application.Tests.TestData;
 using br.com.fiap.cloudgames.Application.UnitsOfWork;
-using br.com.fiap.cloudgames.Application.UseCases.ChangeUserRole;
+using br.com.fiap.cloudgames.Application.UseCases.User.ChangeUserRole;
 using br.com.fiap.cloudgames.Domain.Aggregates;
 using br.com.fiap.cloudgames.Domain.Enums;
 using br.com.fiap.cloudgames.Domain.Repositories;

@@ -1,7 +1,8 @@
-using br.com.fiap.cloudgames.Application.UseCases.ChangeUserRole;
-using br.com.fiap.cloudgames.Application.UseCases.CreateGame;
-using br.com.fiap.cloudgames.Application.UseCases.LogIn;
-using br.com.fiap.cloudgames.Application.UseCases.RegisterUser;
+using br.com.fiap.cloudgames.Application.UseCases.User.ChangeUserRole;
+using br.com.fiap.cloudgames.Application.UseCases.Game.CreateGame;
+using br.com.fiap.cloudgames.Application.UseCases.Game.UpdateGame;
+using br.com.fiap.cloudgames.Application.UseCases.User.LogIn;
+using br.com.fiap.cloudgames.Application.UseCases.User.RegisterUser;
 
 namespace br.com.fiap.cloudgames.Application.Tests.TestData;
 
@@ -14,6 +15,21 @@ public static class ApplicationTestData
         Story = "Once upon a time",
         Franchise = "Franchise X",
         ReleaseDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-1)),
+        AgeRating = "LIVRE",
+        GameModes = ["SinglePlayer"],
+        Publisher = "Publisher Inc",
+        Developers = ["Dev Studio"],
+        Platforms = ["Windows"]
+    };
+
+    public static UpdateGameRequest ValidUpdateGameRequest() => new()
+    {
+        Id = Guid.NewGuid().ToString(),
+        Title = "My Game Updated",
+        Description = "A cool game - updated",
+        Story = "Once upon a time - updated",
+        Franchise = "Franchise X",
+        ReleaseDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-2)),
         AgeRating = "LIVRE",
         GameModes = ["SinglePlayer"],
         Publisher = "Publisher Inc",

@@ -1,4 +1,5 @@
 using br.com.fiap.cloudgames.Domain.Aggregates;
+using br.com.fiap.cloudgames.Domain.Exceptions;
 using br.com.fiap.cloudgames.Domain.Enums;
 using br.com.fiap.cloudgames.Domain.Tests.TestData;
 
@@ -39,7 +40,7 @@ public class GameTests
     [InlineData("   ")]
     public void CreateGame_WhenTitleIsBlank_ShouldThrow(string? title)
     {
-        Assert.Throws<ArgumentNullException>(() =>
+        var ex = Assert.Throws<DomainException>(() =>
             Game.CreateGame(
                 title: title!,
                 description: "desc",
@@ -51,6 +52,7 @@ public class GameTests
                 publisher: DomainTestData.ValidPublisher(),
                 developers: DomainTestData.ValidDevelopers(),
                 platforms: DomainTestData.ValidPlatforms()));
+        Assert.Contains("Title is required.", ex.Errors);
     }
 
     [Theory]
@@ -59,7 +61,7 @@ public class GameTests
     [InlineData("   ")]
     public void CreateGame_WhenDescriptionIsBlank_ShouldThrow(string? description)
     {
-        Assert.Throws<ArgumentNullException>(() =>
+        var ex = Assert.Throws<DomainException>(() =>
             Game.CreateGame(
                 title: "title",
                 description: description!,
@@ -71,6 +73,7 @@ public class GameTests
                 publisher: DomainTestData.ValidPublisher(),
                 developers: DomainTestData.ValidDevelopers(),
                 platforms: DomainTestData.ValidPlatforms()));
+        Assert.Contains("Description is required.", ex.Errors);
     }
 
     [Theory]
@@ -79,7 +82,7 @@ public class GameTests
     [InlineData("   ")]
     public void CreateGame_WhenStoryIsBlank_ShouldThrow(string? story)
     {
-        Assert.Throws<ArgumentNullException>(() =>
+        var ex = Assert.Throws<DomainException>(() =>
             Game.CreateGame(
                 title: "title",
                 description: "desc",
@@ -91,12 +94,13 @@ public class GameTests
                 publisher: DomainTestData.ValidPublisher(),
                 developers: DomainTestData.ValidDevelopers(),
                 platforms: DomainTestData.ValidPlatforms()));
+        Assert.Contains("Story is required.", ex.Errors);
     }
 
     [Fact]
     public void CreateGame_WhenReleaseDateIsInTheFuture_ShouldThrow()
     {
-        Assert.Throws<ArgumentOutOfRangeException>(() =>
+        var ex = Assert.Throws<DomainException>(() =>
             Game.CreateGame(
                 title: "title",
                 description: "desc",
@@ -108,12 +112,13 @@ public class GameTests
                 publisher: DomainTestData.ValidPublisher(),
                 developers: DomainTestData.ValidDevelopers(),
                 platforms: DomainTestData.ValidPlatforms()));
+        Assert.Contains("ReleaseDate cannot be in the future.", ex.Errors);
     }
 
     [Fact]
     public void CreateGame_WhenGameModesIsNullOrEmpty_ShouldThrow()
     {
-        Assert.Throws<ArgumentNullException>(() =>
+        var ex1 = Assert.Throws<DomainException>(() =>
             Game.CreateGame(
                 title: "title",
                 description: "desc",
@@ -125,8 +130,9 @@ public class GameTests
                 publisher: DomainTestData.ValidPublisher(),
                 developers: DomainTestData.ValidDevelopers(),
                 platforms: DomainTestData.ValidPlatforms()));
+        Assert.Contains("At least one GameMode is required.", ex1.Errors);
 
-        Assert.Throws<ArgumentNullException>(() =>
+        var ex2 = Assert.Throws<DomainException>(() =>
             Game.CreateGame(
                 title: "title",
                 description: "desc",
@@ -138,12 +144,13 @@ public class GameTests
                 publisher: DomainTestData.ValidPublisher(),
                 developers: DomainTestData.ValidDevelopers(),
                 platforms: DomainTestData.ValidPlatforms()));
+        Assert.Contains("At least one GameMode is required.", ex2.Errors);
     }
 
     [Fact]
     public void CreateGame_WhenDevelopersIsNullOrEmpty_ShouldThrow()
     {
-        Assert.Throws<ArgumentNullException>(() =>
+        var ex1 = Assert.Throws<DomainException>(() =>
             Game.CreateGame(
                 title: "title",
                 description: "desc",
@@ -155,8 +162,9 @@ public class GameTests
                 publisher: DomainTestData.ValidPublisher(),
                 developers: null!,
                 platforms: DomainTestData.ValidPlatforms()));
+        Assert.Contains("At least one Developer is required.", ex1.Errors);
 
-        Assert.Throws<ArgumentNullException>(() =>
+        var ex2 = Assert.Throws<DomainException>(() =>
             Game.CreateGame(
                 title: "title",
                 description: "desc",
@@ -168,12 +176,13 @@ public class GameTests
                 publisher: DomainTestData.ValidPublisher(),
                 developers: [],
                 platforms: DomainTestData.ValidPlatforms()));
+        Assert.Contains("At least one Developer is required.", ex2.Errors);
     }
 
     [Fact]
     public void CreateGame_WhenPlatformsIsNullOrEmpty_ShouldThrow()
     {
-        Assert.Throws<ArgumentNullException>(() =>
+        var ex1 = Assert.Throws<DomainException>(() =>
             Game.CreateGame(
                 title: "title",
                 description: "desc",
@@ -185,8 +194,9 @@ public class GameTests
                 publisher: DomainTestData.ValidPublisher(),
                 developers: DomainTestData.ValidDevelopers(),
                 platforms: null!));
+        Assert.Contains("At least one Platform is required.", ex1.Errors);
 
-        Assert.Throws<ArgumentNullException>(() =>
+        var ex2 = Assert.Throws<DomainException>(() =>
             Game.CreateGame(
                 title: "title",
                 description: "desc",
@@ -198,6 +208,7 @@ public class GameTests
                 publisher: DomainTestData.ValidPublisher(),
                 developers: DomainTestData.ValidDevelopers(),
                 platforms: []));
+        Assert.Contains("At least one Platform is required.", ex2.Errors);
     }
 }
 

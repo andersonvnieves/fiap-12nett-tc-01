@@ -1,5 +1,6 @@
 using br.com.fiap.cloudgames.Domain.Entities;
 using br.com.fiap.cloudgames.Domain.Enums;
+using br.com.fiap.cloudgames.Domain.Exceptions;
 
 namespace br.com.fiap.cloudgames.Domain.Aggregates;
 
@@ -53,6 +54,32 @@ public class Game
     public List<Platforms> Platforms { get; private set; }
     #endregion
 
+    public void UpdateDetails(
+        String title,
+        String description,
+        String story,
+        String franchise,
+        DateOnly releaseDate,
+        AgeRating ageRating,
+        List<GameModes> gameModes,
+        Publisher publisher,
+        List<Developer> developers,
+        List<Platforms> platforms)
+    {
+        Validate(title, description, story, releaseDate, ageRating, gameModes, developers, platforms);
+
+        Title = title;
+        Description = description;
+        Story = story;
+        Franchise = franchise;
+        ReleaseDate = releaseDate;
+        AgeRating = ageRating;
+        GameModes = gameModes;
+        Publisher = publisher;
+        Developers = developers;
+        Platforms = platforms;
+    }
+
     private static void Validate(
         string title,
         string description,
@@ -63,25 +90,30 @@ public class Game
         List<Developer> developers,
         List<Platforms> platforms)
     {
+        var errors = new List<string>();
+
         if (String.IsNullOrWhiteSpace(title))
-            throw new ArgumentNullException(nameof(Title));
-        
+            errors.Add("Title is required.");
+
         if (String.IsNullOrWhiteSpace(description))
-            throw new ArgumentNullException(nameof(Description));
-        
+            errors.Add("Description is required.");
+
         if (String.IsNullOrWhiteSpace(story))
-            throw new ArgumentNullException(nameof(Story));
-        
+            errors.Add("Story is required.");
+
         if (releaseDate > DateOnly.FromDateTime(DateTime.Now))
-            throw new ArgumentOutOfRangeException(nameof(ReleaseDate));
-        
+            errors.Add("ReleaseDate cannot be in the future.");
+
         if (gameModes == null || !gameModes.Any())
-            throw new ArgumentNullException(nameof(GameModes));
-        
-        if(developers == null || !developers.Any())
-            throw new ArgumentNullException(nameof(Developers));
-        
+            errors.Add("At least one GameMode is required.");
+
+        if (developers == null || !developers.Any())
+            errors.Add("At least one Developer is required.");
+
         if (platforms == null || !platforms.Any())
-            throw new ArgumentNullException(nameof(Platforms));
+            errors.Add("At least one Platform is required.");
+
+        if (errors.Any())
+            throw new DomainException(errors);
     }
 }

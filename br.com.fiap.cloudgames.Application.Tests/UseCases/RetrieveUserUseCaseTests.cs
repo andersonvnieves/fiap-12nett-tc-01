@@ -1,4 +1,4 @@
-using br.com.fiap.cloudgames.Application.UseCases.RetrieveUser;
+using br.com.fiap.cloudgames.Application.UseCases.User.RetrieveUser;
 using br.com.fiap.cloudgames.Domain.Aggregates;
 using br.com.fiap.cloudgames.Domain.Repositories;
 using br.com.fiap.cloudgames.Domain.ValueObjects;

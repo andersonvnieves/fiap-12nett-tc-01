@@ -1,4 +1,5 @@
 using System.Net.Mail;
+using br.com.fiap.cloudgames.Domain.Exceptions;
 
 namespace br.com.fiap.cloudgames.Domain.ValueObjects;
 
@@ -8,11 +9,16 @@ public record EmailAddress
 
     public EmailAddress(String email)
     {
-        if(String.IsNullOrWhiteSpace(email))
-            throw new ArgumentNullException(nameof(email));
-        
-        if(email.Length > 254)
-            throw new ArgumentOutOfRangeException(nameof(email));
+        var errors = new List<string>();
+
+        if (String.IsNullOrWhiteSpace(email))
+            errors.Add("Email is required.");
+
+        if (!String.IsNullOrWhiteSpace(email) && email.Length > 254)
+            errors.Add("Email must be at most 254 characters.");
+
+        if (errors.Any())
+            throw new DomainException(errors);
 
         try
         {
@@ -21,7 +27,7 @@ public record EmailAddress
         }
         catch (FormatException)
         {
-            throw new ArgumentException("Email address must be a valid email address", nameof(email));
+            throw new DomainException(new List<string> { "Email address must be a valid email address." });
         }
     }
     

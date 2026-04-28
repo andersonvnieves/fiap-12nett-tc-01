@@ -1,6 +1,6 @@
 using br.com.fiap.cloudgames.Application.Tests.TestData;
 using br.com.fiap.cloudgames.Application.UnitsOfWork;
-using br.com.fiap.cloudgames.Application.UseCases.CreateGame;
+using br.com.fiap.cloudgames.Application.UseCases.Game.CreateGame;
 using br.com.fiap.cloudgames.Domain.Repositories;
 using Microsoft.Extensions.Logging;
 using Moq;

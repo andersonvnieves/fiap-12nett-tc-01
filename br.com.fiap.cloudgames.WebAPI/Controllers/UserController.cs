@@ -1,6 +1,6 @@
-using br.com.fiap.cloudgames.Application.UseCases.ChangeUserRole;
-using br.com.fiap.cloudgames.Application.UseCases.RegisterUser;
-using br.com.fiap.cloudgames.Application.UseCases.RetrieveUser;
+using br.com.fiap.cloudgames.Application.UseCases.User.ChangeUserRole;
+using br.com.fiap.cloudgames.Application.UseCases.User.RegisterUser;
+using br.com.fiap.cloudgames.Application.UseCases.User.RetrieveUser;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,8 +31,8 @@ namespace br.com.fiap.cloudgames.WebAPI.Controllers
         }
 
         [Authorize(Roles = ADMIN_ROLE)]
-        [HttpPut("role")]
-        public async Task<IActionResult> Put([FromBody] ChangeUserRoleRequest request)
+        [HttpPatch("role")]
+        public async Task<IActionResult> Patch([FromBody] ChangeUserRoleRequest request)
         {
             var result = await _changeUserRoleUseCase.ExecuteAsync(request);
             return Ok(result);

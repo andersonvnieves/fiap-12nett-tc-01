@@ -1,4 +1,5 @@
 using br.com.fiap.cloudgames.Domain.Aggregates;
+using br.com.fiap.cloudgames.Domain.Exceptions;
 using br.com.fiap.cloudgames.Domain.Enums;
 using br.com.fiap.cloudgames.Domain.Tests.TestData;
 
@@ -30,7 +31,8 @@ public class UserTests
         var email = DomainTestData.ValidEmail();
         var identityId = DomainTestData.ValidIdentityId();
 
-        Assert.Throws<ArgumentNullException>(() => User.Create(null!, email, identityId));
+        var ex = Assert.Throws<DomainException>(() => User.Create(null!, email, identityId));
+        Assert.Contains("Name is required.", ex.Errors);
     }
 
     [Fact]
@@ -39,7 +41,8 @@ public class UserTests
         var name = DomainTestData.ValidName();
         var identityId = DomainTestData.ValidIdentityId();
 
-        Assert.Throws<ArgumentNullException>(() => User.Create(name, null!, identityId));
+        var ex = Assert.Throws<DomainException>(() => User.Create(name, null!, identityId));
+        Assert.Contains("Email is required.", ex.Errors);
     }
 
     [Theory]
@@ -50,7 +53,8 @@ public class UserTests
         var name = DomainTestData.ValidName();
         var email = DomainTestData.ValidEmail();
 
-        Assert.Throws<ArgumentNullException>(() => User.Create(name, email, identityId!));
+        var ex = Assert.Throws<DomainException>(() => User.Create(name, email, identityId!));
+        Assert.Contains("IdentityId is required.", ex.Errors);
     }
 }
 

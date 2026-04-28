@@ -1,4 +1,5 @@
 using br.com.fiap.cloudgames.Domain.ValueObjects;
+using br.com.fiap.cloudgames.Domain.Exceptions;
 
 namespace br.com.fiap.cloudgames.Domain.Tests.ValueObjects;
 
@@ -19,14 +20,16 @@ public class EmailAddressTests
     [InlineData("   ")]
     public void WhenEmailIsBlank_ShouldThrow(string? value)
     {
-        Assert.Throws<ArgumentNullException>(() => new EmailAddress(value!));
+        var ex = Assert.Throws<DomainException>(() => new EmailAddress(value!));
+        Assert.Contains("Email is required.", ex.Errors);
     }
 
     [Fact]
     public void WhenEmailIsTooLong_ShouldThrow()
     {
         var tooLong = new string('a', 255);
-        Assert.Throws<ArgumentOutOfRangeException>(() => new EmailAddress(tooLong));
+        var ex = Assert.Throws<DomainException>(() => new EmailAddress(tooLong));
+        Assert.Contains("Email must be at most 254 characters.", ex.Errors);
     }
 
     [Theory]
@@ -35,8 +38,8 @@ public class EmailAddressTests
     [InlineData("@example.com")]
     public void WhenEmailIsInvalid_ShouldThrow(string value)
     {
-        var ex = Assert.Throws<ArgumentException>(() => new EmailAddress(value));
-        Assert.Equal("email", ex.ParamName);
+        var ex = Assert.Throws<DomainException>(() => new EmailAddress(value));
+        Assert.Contains("Email address must be a valid email address.", ex.Errors);
     }
 }
 

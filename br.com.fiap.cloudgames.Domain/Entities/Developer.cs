@@ -1,3 +1,5 @@
+using br.com.fiap.cloudgames.Domain.Exceptions;
+
 namespace br.com.fiap.cloudgames.Domain.Entities;
 
 public class Developer
@@ -6,6 +8,14 @@ public class Developer
     
     public Developer(String name)
     {
-        Name = String.IsNullOrWhiteSpace(name) ? throw new ArgumentNullException(nameof(name)) : name;
+        var errors = new List<string>();
+
+        if (String.IsNullOrWhiteSpace(name))
+            errors.Add("Developer name is required.");
+
+        if (errors.Any())
+            throw new DomainException(errors);
+
+        Name = name.Trim();
     }
 }

@@ -1,4 +1,4 @@
-using br.com.fiap.cloudgames.Application.UseCases.RetrieveGame;
+using br.com.fiap.cloudgames.Application.UseCases.Game.RetrieveGame;
 using br.com.fiap.cloudgames.Domain.Aggregates;
 using br.com.fiap.cloudgames.Domain.Entities;
 using br.com.fiap.cloudgames.Domain.Enums;

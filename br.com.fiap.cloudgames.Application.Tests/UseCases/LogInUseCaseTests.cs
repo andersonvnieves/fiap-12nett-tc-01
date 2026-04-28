@@ -1,6 +1,6 @@
 using br.com.fiap.cloudgames.Application.Services;
 using br.com.fiap.cloudgames.Application.Tests.TestData;
-using br.com.fiap.cloudgames.Application.UseCases.LogIn;
+using br.com.fiap.cloudgames.Application.UseCases.User.LogIn;
 using br.com.fiap.cloudgames.Domain.Aggregates;
 using br.com.fiap.cloudgames.Domain.Repositories;
 using br.com.fiap.cloudgames.Domain.ValueObjects;

@@ -1,4 +1,5 @@
 using br.com.fiap.cloudgames.Domain.ValueObjects;
+using br.com.fiap.cloudgames.Domain.Exceptions;
 
 namespace br.com.fiap.cloudgames.Domain.Tests.ValueObjects;
 
@@ -20,7 +21,8 @@ public class NameTests
     [InlineData("   ")]
     public void WhenFirstNameIsBlank_ShouldThrow(string? firstName)
     {
-        Assert.Throws<ArgumentNullException>(() => new Name(firstName!, "Silva"));
+        var ex = Assert.Throws<DomainException>(() => new Name(firstName!, "Silva"));
+        Assert.Contains("FirstName is required.", ex.Errors);
     }
 
     [Theory]
@@ -29,7 +31,8 @@ public class NameTests
     [InlineData("   ")]
     public void WhenLastNameIsBlank_ShouldThrow(string? lastName)
     {
-        Assert.Throws<ArgumentNullException>(() => new Name("Anderson", lastName!));
+        var ex = Assert.Throws<DomainException>(() => new Name("Anderson", lastName!));
+        Assert.Contains("LastName is required.", ex.Errors);
     }
 }
 

@@ -1,4 +1,4 @@
-using br.com.fiap.cloudgames.Application.UseCases.LogIn;
+using br.com.fiap.cloudgames.Application.UseCases.User.LogIn;
 using Microsoft.AspNetCore.Mvc;
 
 namespace br.com.fiap.cloudgames.WebAPI.Controllers

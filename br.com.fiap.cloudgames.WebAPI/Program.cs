@@ -2,13 +2,14 @@ using System.Security.Claims;
 using System.Text;
 using br.com.fiap.cloudgames.Application.Services;
 using br.com.fiap.cloudgames.Domain.Repositories;
-using br.com.fiap.cloudgames.Application.UseCases.CreateGame;
-using br.com.fiap.cloudgames.Application.UseCases.LogIn;
-using br.com.fiap.cloudgames.Application.UseCases.RegisterUser;
+using br.com.fiap.cloudgames.Application.UseCases.Game.CreateGame;
+using br.com.fiap.cloudgames.Application.UseCases.User.LogIn;
+using br.com.fiap.cloudgames.Application.UseCases.User.RegisterUser;
 using br.com.fiap.cloudgames.Application.UnitsOfWork;
-using br.com.fiap.cloudgames.Application.UseCases.ChangeUserRole;
-using br.com.fiap.cloudgames.Application.UseCases.RetrieveGame;
-using br.com.fiap.cloudgames.Application.UseCases.RetrieveUser;
+using br.com.fiap.cloudgames.Application.UseCases.User.ChangeUserRole;
+using br.com.fiap.cloudgames.Application.UseCases.Game.RetrieveGame;
+using br.com.fiap.cloudgames.Application.UseCases.Game.UpdateGame;
+using br.com.fiap.cloudgames.Application.UseCases.User.RetrieveUser;
 using br.com.fiap.cloudgames.Infrastructure.Config;
 using br.com.fiap.cloudgames.Infrastructure.Persistence;
 using br.com.fiap.cloudgames.Infrastructure.Persistence.Context;
@@ -90,6 +91,7 @@ builder.Services.AddScoped<RegisterUserUseCase>();
 builder.Services.AddScoped<ChangeUserRoleUseCase>();
 builder.Services.AddScoped<RetrieveUserUseCase>();
 builder.Services.AddScoped<RetrieveGameUseCase>();
+builder.Services.AddScoped<UpdateGameUseCase>();
 
 //Services
 builder.Services.AddScoped<IUserAuthService, IdentityUserAuthService>();
@@ -148,7 +150,6 @@ app.Run();
 
 
 //TODO: Criar Testes de Integracao
-//TODO: Tentar implementar BDD
 
 //TODO: Extra, CQRS com Dapper
 //TODO: Extra, GraphQL
