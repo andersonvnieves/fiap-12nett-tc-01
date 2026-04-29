@@ -19,7 +19,7 @@ public class RetrieveGameUseCaseTests
 
         var request = new RetrieveGameRequest { GameId = "not-a-guid" };
 
-        var ex = await Assert.ThrowsAsync<ArgumentException>(() => sut.ExecuteAsync(request));
+        var ex = await Assert.ThrowsAsync<ApplicationException>(() => sut.ExecuteAsync(request));
         Assert.Contains("Invalid game id", ex.Message);
     }
 
@@ -35,7 +35,7 @@ public class RetrieveGameUseCaseTests
 
         var request = new RetrieveGameRequest { GameId = gameId.ToString() };
 
-        var ex = await Assert.ThrowsAsync<ArgumentException>(() => sut.ExecuteAsync(request));
+        var ex = await Assert.ThrowsAsync<ApplicationException>(() => sut.ExecuteAsync(request));
         Assert.Contains("not found", ex.Message);
     }
 

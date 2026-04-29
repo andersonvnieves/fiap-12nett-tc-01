@@ -18,7 +18,7 @@ public class RetrieveUserUseCaseTests
 
         var request = new RetrieveUserRequest { UserId = "not-a-guid" };
 
-        var ex = await Assert.ThrowsAsync<ArgumentException>(() => sut.ExecuteAsync(request));
+        var ex = await Assert.ThrowsAsync<ApplicationException>(() => sut.ExecuteAsync(request));
         Assert.Contains("Invalid UserId Format", ex.Message);
     }
 
@@ -34,7 +34,7 @@ public class RetrieveUserUseCaseTests
 
         var request = new RetrieveUserRequest { UserId = userId.ToString() };
 
-        var ex = await Assert.ThrowsAsync<Exception>(() => sut.ExecuteAsync(request));
+        var ex = await Assert.ThrowsAsync<ApplicationException>(() => sut.ExecuteAsync(request));
         Assert.Contains("User not found", ex.Message);
     }
 

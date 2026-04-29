@@ -29,7 +29,7 @@ public class ChangeUserRoleUseCaseTests
 
         var sut = new ChangeUserRoleUseCase(repo.Object, auth.Object, uow.Object, logger.Object);
 
-        var ex = await Assert.ThrowsAsync<ArgumentException>(() => sut.ExecuteAsync(request));
+        var ex = await Assert.ThrowsAsync<ApplicationException>(() => sut.ExecuteAsync(request));
         Assert.Contains("User not found", ex.Message);
 
         uow.Verify(x => x.BeginTransactionAsync(), Times.Once);

@@ -23,7 +23,7 @@ public class UpdateGameUseCaseTests
         var request = ApplicationTestData.ValidUpdateGameRequest();
         request.Id = "not-a-guid";
 
-        var ex = await Assert.ThrowsAsync<ArgumentException>(() => sut.ExecuteAsync(request));
+        var ex = await Assert.ThrowsAsync<ApplicationException>(() => sut.ExecuteAsync(request));
         Assert.Contains("Invalid game id", ex.Message);
     }
 
@@ -38,7 +38,7 @@ public class UpdateGameUseCaseTests
         var request = ApplicationTestData.ValidUpdateGameRequest();
         request.AgeRating = "INVALID";
 
-        var ex = await Assert.ThrowsAsync<ArgumentException>(() => sut.ExecuteAsync(request));
+        var ex = await Assert.ThrowsAsync<ApplicationException>(() => sut.ExecuteAsync(request));
         Assert.Contains("Invalid age rating", ex.Message);
     }
 
@@ -53,7 +53,7 @@ public class UpdateGameUseCaseTests
         var request = ApplicationTestData.ValidUpdateGameRequest();
         request.GameModes = ["INVALID"];
 
-        var ex = await Assert.ThrowsAsync<ArgumentException>(() => sut.ExecuteAsync(request));
+        var ex = await Assert.ThrowsAsync<ApplicationException>(() => sut.ExecuteAsync(request));
         Assert.Contains("Invalid game mode", ex.Message);
     }
 
@@ -68,7 +68,7 @@ public class UpdateGameUseCaseTests
         var request = ApplicationTestData.ValidUpdateGameRequest();
         request.Platforms = ["INVALID"];
 
-        var ex = await Assert.ThrowsAsync<ArgumentException>(() => sut.ExecuteAsync(request));
+        var ex = await Assert.ThrowsAsync<ApplicationException>(() => sut.ExecuteAsync(request));
         Assert.Contains("Invalid platform", ex.Message);
     }
 
@@ -85,7 +85,7 @@ public class UpdateGameUseCaseTests
 
         repo.Setup(x => x.GetByIdAsync(gameId)).ReturnsAsync((Game?)null);
 
-        var ex = await Assert.ThrowsAsync<ArgumentException>(() => sut.ExecuteAsync(request));
+        var ex = await Assert.ThrowsAsync<ApplicationException>(() => sut.ExecuteAsync(request));
         Assert.Contains("not found", ex.Message);
     }
 

@@ -20,7 +20,7 @@ public class CreateGameUseCaseTests
         var request = ApplicationTestData.ValidCreateGameRequest();
         request.AgeRating = "INVALID";
 
-        var ex = await Assert.ThrowsAsync<ArgumentException>(() => sut.ExecuteAsync(request));
+        var ex = await Assert.ThrowsAsync<ApplicationException>(() => sut.ExecuteAsync(request));
         Assert.Contains("Invalid age rating", ex.Message);
     }
 
@@ -35,7 +35,7 @@ public class CreateGameUseCaseTests
         var request = ApplicationTestData.ValidCreateGameRequest();
         request.GameModes = ["INVALID"];
 
-        var ex = await Assert.ThrowsAsync<ArgumentException>(() => sut.ExecuteAsync(request));
+        var ex = await Assert.ThrowsAsync<ApplicationException>(() => sut.ExecuteAsync(request));
         Assert.Contains("Invalid game mode", ex.Message);
     }
 
@@ -50,7 +50,7 @@ public class CreateGameUseCaseTests
         var request = ApplicationTestData.ValidCreateGameRequest();
         request.Platforms = ["INVALID"];
 
-        var ex = await Assert.ThrowsAsync<ArgumentException>(() => sut.ExecuteAsync(request));
+        var ex = await Assert.ThrowsAsync<ApplicationException>(() => sut.ExecuteAsync(request));
         Assert.Contains("Invalid platform", ex.Message);
     }
 
