@@ -29,7 +29,7 @@ public class IdentityUserAuthService : IUserAuthService
         if(!result.Succeeded)
         {
             var errors = string.Join(", ", result.Errors.Select(e => e.Description));
-            throw new ArgumentException($"Error creating user: {errors}");
+            throw new ApplicationException($"Error creating user: {errors}");
         }
         
         return identityUser.Id;
@@ -39,11 +39,11 @@ public class IdentityUserAuthService : IUserAuthService
     {
         var identityUser = await _userManager.FindByEmailAsync(email);
         if (identityUser == null)
-            throw new Exception(LOG_IN_ERROR_MESSAGE);
+            throw new ApplicationException(LOG_IN_ERROR_MESSAGE);
 
         var isPasswordValid = await _userManager.CheckPasswordAsync(identityUser, password);
         if (!isPasswordValid)
-            throw new Exception(LOG_IN_ERROR_MESSAGE);
+            throw new ApplicationException(LOG_IN_ERROR_MESSAGE);
         
         return identityUser.Id;
     }
@@ -62,7 +62,7 @@ public class IdentityUserAuthService : IUserAuthService
     {
         var user = await _userManager.FindByIdAsync(identityUserId);
         if (user == null)
-            throw new Exception("User not found");
+            throw new ApplicationException("User not found");
         
         var currentRole = await _userManager.GetRolesAsync(user);
         if (currentRole.Any())
@@ -71,7 +71,7 @@ public class IdentityUserAuthService : IUserAuthService
             if (!removeResult.Succeeded)
             {
                 var errors = string.Join(", ", removeResult.Errors.Select(e => e.Description));
-                throw new Exception($"Error removing roles: {errors}");
+                throw new ApplicationException($"Error removing roles: {errors}");
             }
         }
         
@@ -79,7 +79,7 @@ public class IdentityUserAuthService : IUserAuthService
         if (!addResult.Succeeded)
         {
             var errors = string.Join(", ", addResult.Errors.Select(e => e.Description));
-            throw new Exception($"Error creating roles: {errors}");
+            throw new ApplicationException($"Error creating roles: {errors}");
         }
     }
 }

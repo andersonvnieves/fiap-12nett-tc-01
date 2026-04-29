@@ -28,8 +28,4 @@
       <ProjectReference Include="..\br.com.fiap.cloudgames.Infrastructure\br.com.fiap.cloudgames.Infrastructure.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="GraphQL\Mutations\" />
-    </ItemGroup>
-
 </Project>

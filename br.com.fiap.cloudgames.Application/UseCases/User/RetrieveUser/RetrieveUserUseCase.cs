@@ -24,14 +24,14 @@ public class RetrieveUserUseCase
             if (!parseResult)
             {
                 _logger.LogWarning("Invalid UserId format. UserId={UserId}", request.UserId);
-                throw new ArgumentException("Invalid UserId Format");
+                throw new ApplicationException("Invalid UserId Format");
             }
 
             var user = await _userRepository.GetUserByIdAsync(UserId);
             if(user == null)
             {
                 _logger.LogWarning("User not found. UserId={UserId}", request.UserId);
-                throw new Exception("User not found");
+                throw new ApplicationException("User not found");
             }
 
             _logger.LogInformation("User retrieved successfully. UserId={UserId}, Email={Email}", user.Id, user.Email.Email);

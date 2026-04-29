@@ -33,13 +33,13 @@ public class UpdateGameUseCase
             if (!Guid.TryParse(request.Id, out var gameId))
             {
                 _logger.LogWarning("Invalid game id format. GameId={GameId}", request.Id);
-                throw new ArgumentException($"Invalid game id '{request.Id}'");
+                throw new ApplicationException($"Invalid game id '{request.Id}'");
             }
 
             if (!Enum.TryParse<AgeRating>(request.AgeRating, true, out var ageRating))
             {
                 _logger.LogWarning("Invalid age rating. AgeRating={AgeRating}, GameId={GameId}", request.AgeRating, request.Id);
-                throw new ArgumentException($"Invalid age rating '{request.AgeRating}'");
+                throw new ApplicationException($"Invalid age rating '{request.AgeRating}'");
             }
         
             var gameModes = new List<GameModes>();
@@ -48,7 +48,7 @@ public class UpdateGameUseCase
                 if (!Enum.TryParse<GameModes>(requestGameMode, true, out var gameMode))
                 {
                     _logger.LogWarning("Invalid game mode. GameMode={GameMode}, GameId={GameId}", requestGameMode, request.Id);
-                    throw new ArgumentException($"Invalid game mode '{requestGameMode}'");
+                    throw new ApplicationException($"Invalid game mode '{requestGameMode}'");
                 }
                 gameModes.Add(gameMode);
             }
@@ -67,7 +67,7 @@ public class UpdateGameUseCase
                 if(!Enum.TryParse<Platforms>(requestPlatform, true, out var platform))
                 {
                     _logger.LogWarning("Invalid platform. Platform={Platform}, GameId={GameId}", requestPlatform, request.Id);
-                    throw new ArgumentException($"Invalid platform '{requestPlatform}'");
+                    throw new ApplicationException($"Invalid platform '{requestPlatform}'");
                 }
                 platforms.Add(platform);
             }
@@ -76,7 +76,7 @@ public class UpdateGameUseCase
             if (game == null)
             {
                 _logger.LogWarning("Game not found. GameId={GameId}", request.Id);
-                throw new ArgumentException($"Game with id '{request.Id}' not found");
+                throw new ApplicationException($"Game with id '{request.Id}' not found");
             }
 
             game.UpdateDetails(

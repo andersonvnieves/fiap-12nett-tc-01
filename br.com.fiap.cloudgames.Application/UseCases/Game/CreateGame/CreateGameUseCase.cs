@@ -26,7 +26,7 @@ public class CreateGameUseCase
         if (!Enum.TryParse<AgeRating>(request.AgeRating, true, out var ageRating))
         {
             _logger.LogWarning("Invalid age rating. AgeRating={AgeRating}, Title={Title}", request.AgeRating, request.Title);
-            throw new ArgumentException($"Invalid age rating '{request.AgeRating}'");
+            throw new ApplicationException($"Invalid age rating '{request.AgeRating}'");
         }
         
         var gameModes = new List<GameModes>();
@@ -35,7 +35,7 @@ public class CreateGameUseCase
             if (!Enum.TryParse<GameModes>(requestGameMode, true, out var gameMode))
             {
                 _logger.LogWarning("Invalid game mode. GameMode={GameMode}, Title={Title}", requestGameMode, request.Title);
-                throw new ArgumentException($"Invalid game mode '{requestGameMode}'");
+                throw new ApplicationException($"Invalid game mode '{requestGameMode}'");
             }
             gameModes.Add(gameMode);
         }
@@ -54,7 +54,7 @@ public class CreateGameUseCase
             if(!Enum.TryParse<Platforms>(requestPlatform, true, out var platform))
             {
                 _logger.LogWarning("Invalid platform. Platform={Platform}, Title={Title}", requestPlatform, request.Title);
-                throw new ArgumentException($"Invalid platform '{requestPlatform}'");
+                throw new ApplicationException($"Invalid platform '{requestPlatform}'");
             }
             platforms.Add(platform);
         }

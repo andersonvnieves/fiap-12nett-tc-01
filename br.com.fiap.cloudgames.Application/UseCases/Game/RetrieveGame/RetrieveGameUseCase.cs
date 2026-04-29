@@ -24,14 +24,14 @@ public class RetrieveGameUseCase
             if(!parseResult)
             {
                 _logger.LogWarning("Invalid game id format. GameId={GameId}", request.GameId);
-                throw new ArgumentException($"Invalid game id '{request.GameId}'");
+                throw new ApplicationException($"Invalid game id '{request.GameId}'");
             }
             
             var game = await _gameRepository.GetByIdAsync(gameId);
             if(game == null)
             {
                 _logger.LogWarning("Game not found. GameId={GameId}", request.GameId);
-                throw new ArgumentException($"Game with id '{request.GameId}' not found");
+                throw new ApplicationException($"Game with id '{request.GameId}' not found");
             }
 
             _logger.LogInformation("Game retrieved successfully. GameId={GameId}, Title={Title}", game.Id, game.Title);
