@@ -90,7 +90,7 @@ public class CreateGameUseCase
                 Developers = game.Developers.Select(developer => developer.Name).ToList(),
                 Platforms = game.Platforms.Select(platform => platform.ToString()).ToList(),
                 GameModes = game.GameModes.Select(gameMode => gameMode.ToString()).ToList(),
-                Publisher =  publisher.ToString(),
+                Publisher =  publisher.Name,
             };
             return response;
         }

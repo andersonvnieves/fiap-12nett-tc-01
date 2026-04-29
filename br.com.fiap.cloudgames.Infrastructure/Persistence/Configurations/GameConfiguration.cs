@@ -15,7 +15,7 @@ public class GameConfiguration : IEntityTypeConfiguration<Game>
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Title).IsRequired().HasMaxLength(100);
         builder.Property(x => x.Description).IsRequired().HasMaxLength(500);
-        builder.Property(x => x.Story).IsRequired().HasMaxLength(200);
+        builder.Property(x => x.Story).IsRequired().HasMaxLength(5000);
         builder.Property(x => x.Franchise).IsRequired().HasMaxLength(100);
         builder.Property(x => x.ReleaseDate).IsRequired();
         builder.Property(x => x.AgeRating).HasConversion<String>().IsRequired();
